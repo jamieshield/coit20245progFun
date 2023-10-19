@@ -759,7 +759,7 @@
             }
 
 		processNotes=cleanUnprintable(processNotes)		
-		    result+="<div class='notes' style=''><script>console.log('works')</script>"+processNotes+"</div>"
+		    result+="<div class='notes'>"+processNotes+"</div>"
 			// slides seem to be moved so notes need to go inside
 	    result += "</div>" // slideAndNote
 
@@ -852,6 +852,10 @@
 			case "p:txBody":    
 			case "a:p":   
 			case "a:r":   
+			    result += processNodesInNotesSlide(notesNodes[nodeKey])
+			    result+= "\n";
+			    break;
+			case "a:r_ignore":   
 			    //console.log("descend into"+nodeKey)
 			    result += processNodesInNotesSlide(notesNodes[nodeKey])
 		    }
