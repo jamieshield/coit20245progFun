@@ -768,6 +768,7 @@
 
         }
 	
+	    /*
 	function cleanUnprintable(txt) {
 		txt=txt.replace(/“/g,'"')
 		txt=txt.replace(/‘/g,"'")
@@ -775,6 +776,7 @@
 		txt=txt.replace(/&gt;/g,">")
 		return txt
 	}
+	*/
 
         function indexNodes(content) {
 
