@@ -1,5 +1,3 @@
-</script>
-    <script type="text/javascript"> 
 
     // Obtain the url parameter with name theParameter. Returns false
     // if not specified.
