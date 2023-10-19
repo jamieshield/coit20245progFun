@@ -839,7 +839,7 @@
 	    let result=""
             for (var nodeKey in notesNodes) {
                 if (notesNodes[nodeKey].constructor === Array) {
-		    console.log("descend into array")
+		    //console.log("descend into array")
                     for (var i = 0; i < notesNodes[nodeKey].length; i++) {
                         result += processNodesInNotesSlide(notesNodes[nodeKey][i])
                     }
@@ -852,7 +852,7 @@
 			case "p:txBody":    
 			case "a:p":   
 			case "a:r":   
-			    console.log("descend into"+nodeKey)
+			    //console.log("descend into"+nodeKey)
 			    result += processNodesInNotesSlide(notesNodes[nodeKey])
 		    }
                 }
