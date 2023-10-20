@@ -45,7 +45,7 @@ label {background-color: blue;color: white;padding: 10px;margin:0px;display: inl
 /* Parsons */
 .ui-sortable {
     min-width: 350px; // right box is very jumpy
-    min-height: 300px; // mobile vertically jumpy
+    min-height: 300px !important; // mobile vertically jumpy
 }
 
 /* slides */
@@ -54,8 +54,6 @@ label {background-color: blue;color: white;padding: 10px;margin:0px;display: inl
 	padding: 10px;
 	margin: 1px;
 	border: 1px solid black !important;
-	width: 1280px;
-	resize: both;
 }
 .slide img {
 	//width:100%;
@@ -77,5 +75,5 @@ label {background-color: blue;color: white;padding: 10px;margin:0px;display: inl
 }
 
 .CodeMirror { 
-	resize: both;
+	resize: both !important;
 }
