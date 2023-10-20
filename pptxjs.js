@@ -8,7 +8,7 @@
  * fix issues:
  * [#16](https://github.com/meshesha/PPTXjs/issues/16)
  *
- * js: add notes
+ * js: add notes between slides
  */
 
 (function ($) {
