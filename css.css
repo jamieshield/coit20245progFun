@@ -1,0 +1,80 @@
+/* Hacked up slide presentation */
+/* .showallsections <div:showall> radio <div:slidebut> label <br> <div:svg> <div .notes> */
+
+.section { display: none; }  /* always hide radio buttons */
+
+.slideAndButtons { display: none; }  /* hide most sections by default */
+
+/* select slide and button immediately after selected radio button */
+.section:checked + .slideAndButtons { display: block; }  /* show selected section/slide */
+
+/* hide the buttons */
+/* if showallsections selected, then select the showalldiv sometime after (other buttons in between) - ... */
+/* ~, not +, as div not immediately following checkbox */
+.showallsections:checked ~ .showalldiv .slideAndButtons > label { display: none; }
+.showallsections:checked ~ .showalldiv .slideAndButtons > .buttonBr { display: none; } 
+
+
+/*.showallsections:checked ~ .showalldiv .slideAndButtons { display: inline-block; } 
+*/
+
+.showallsections:checked ~ .hidenotes:checked ~ .showalldiv .slideAndButtons { display: inline-block; } 
+.showallsections:checked ~ .hidenotes:not(checked) ~ .showalldiv .slideAndButtons { display: block; } 
+
+
+/* select showalldiv any preceded by .hideslides */
+.hideslides:checked ~ .showalldiv .slide { display: none !important; }
+.notesTitle { 
+	display: none 
+	font-size:20px; 
+}
+.hideslides:checked ~ .showalldiv .notesTitle { display: block !important; }
+
+.hideslides:checked ~ .showalldiv .notesTitle:has(~ .notes:empty) { display: none !important; }
+
+.hidenotes:checked ~ .showalldiv .notes { display: none !important; }
+/*.hidenotes:checked ~ .showalldiv .slideAndButtons { display: inline-block; }*/
+
+
+
+
+label[disabled] {background-color: lightblue;color: grey;}
+label {background-color: blue;color: white;padding: 10px;margin:0px;display: inline-block;}
+.h5p-iframe .h5p-blanks .h5p-question-content { display: none; }
+
+/* Parsons */
+.ui-sortable {
+    min-width: 350px; // right box is very jumpy
+    //min-height: 300px;
+}
+
+/* slides */
+.slide {
+	border-radius: 20px !important;
+	padding: 10px;
+	margin: 1px;
+	border: 1px solid black !important;
+}
+.slide img {
+	width:100%;
+	max-width:640px;
+	resize:both;
+}
+//div.outline { display:none; }
+/*
+.outline:checked ~ div {
+	display:block;
+}
+*/
+.hideoutlines:checked ~ .showalldiv .outline { display: none !important; }
+
+// limit size of output panel
+.IDE + pre {
+	max-height: 600px;
+	overflow: scroll;
+
+}
+
+.CodeMirror { 
+	resize: both;
+}
