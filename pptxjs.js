@@ -47,7 +47,7 @@
             // These are the defaults.
             pptxFileUrl: "",
             fileInputId: "",
-            slidesScale: "", //Change Slides scale by percent
+            slidesScale: "", //JS "" //Change Slides scale by percent
             slideMode: false, /** true,false*/
             slideType: "divs2slidesjs",  /*'divs2slidesjs' (default) , 'revealjs'(https://revealjs.com)  -TODO*/
             revealjsPath: "", /*path to js file of revealjs - TODO*/
@@ -205,6 +205,8 @@
                     case "slideSize":
                         slideWidth = rslt_ary[i]["data"].width;
                         slideHeight = rslt_ary[i]["data"].height;
+                        //slideWidth = rslt_ary[i]["data"].width * settings.slidesScale/100;
+                        //slideHeight = rslt_ary[i]["data"].height * settings.slidesScale/100;
                         /*
                         $("#"+divId).css({
                             'width': slideWidth + 80,
@@ -258,13 +260,17 @@
             }
 
             var sScale = settings.slidesScale;
+		    //console.log("sScale:"+sScale)
             var trnsfrmScl = "";
             if (sScale != "") {
                 var numsScale = parseInt(sScale);
+		    console.log(numsScale)
                 var scaleVal = numsScale / 100;
                 if (settings.slideMode && settings.slideType != "revealjs") {
                     trnsfrmScl = 'transform:scale(' + scaleVal + '); transform-origin:top';
                 }
+		    // slideWidth slideHeight
+                    trnsfrmScl = 'transform:scale(' + scaleVal + ');'// transform-origin:top';
             }
 
             var slidesHeight = $("#" + divId + " .slide").height();
@@ -272,8 +278,12 @@
             var sScaleVal = (sScale != "") ? scaleVal : 1;
             //console.log("slidesHeight: " + slidesHeight + "\nnumOfSlides: " + numOfSlides + "\nScale: " + sScaleVal)
 
+		// JS removed this due to eval issues
             $("#all_slides_warpper").attr({
                 style: trnsfrmScl + ";height: " + (numOfSlides * slidesHeight * sScaleVal) + "px"
+            })
+            $(".slide").attr({
+                style: trnsfrmScl
             })
 
             //}
@@ -513,6 +523,10 @@
 
             slideWidth = sldSzWidth * slideFactor + settings.incSlide.width|0;// * scaleX;//parseInt(sldSzAttrs["cx"]) * 96 / 914400;
             slideHeight = sldSzHeight * slideFactor + settings.incSlide.height|0;// * scaleY;//parseInt(sldSzAttrs["cy"]) * 96 / 914400;
+
+		// JS
+	    //slideWidth=slideWidth*settings.slidesScale
+	    //slideHeight=slideHeight*settings.slidesScale
             rtenObj = {
                 "width": slideWidth,
                 "height": slideHeight
@@ -559,9 +573,9 @@
                                 "target": RelationshipArray[i]["attrs"]["Target"].replace("../", "ppt/")
                             };
 				    //console.log(notes) // {id:rd12}
-				    console.log(slideResObj[notes["attrs"]["Id"]]) // {target:ppt/notesSlides/notesSlide63.xml}
+				    //console.log(slideResObj[notes["attrs"]["Id"]]) // {target:ppt/notesSlides/notesSlide63.xml}
 				    nfn=slideResObj[notes["attrs"]["Id"]]["target"]
-				    console.log(nfn) // 
+				    //console.log(nfn) // 
 				    notesXml= readXmlFile(zip, nfn);
 
 				    notesNodes = notesXml["p:notes"]["p:cSld"]["p:spTree"];
@@ -8569,6 +8583,35 @@
             if (rotateNode !== undefined) {
                 rotate = angleToDegrees(rotateNode);
             }
+		
+		// JS Crop
+		// http://www.officeopenxml.com/drwPic-tile.php
+            var crop = node["p:blipFill"]["a:srcRect"];
+	    let lcrop="0"
+	    let tcrop="0"
+	    let scaleCrop="100%"
+            if (crop !== undefined) {
+                var cropRect = crop["attrs"];
+                l = (parseInt(cropRect["l"])/1000)
+                t = (parseInt(cropRect["t"])/1000)
+                r = (parseInt(cropRect["r"])/1000)
+                b = (parseInt(cropRect["b"])/1000)
+		if (isNaN(r)) { r=0 }
+		if (isNaN(b)) { b=0 }
+		if (isNaN(l)) { l=0 }
+		if (isNaN(t)) { t=0 }
+                lcrop = -l+"%"
+                tcrop = -t+"%"
+
+		    // l=0, r=0 => 100%; 
+		    // l=50, r=0 => 200%; 
+		    // l=25, r=25 => 200%;  l+r=50; 100/(100-(l+r))*100=200
+		    // l=80, r=10 => 1000%;  l+r=90; 100/(100-(l+r))*100=1000
+		scaleCrop=(100/(100-(l+r))*100)+"%"
+		    //console.log("cropping"+l+" "+r+" "+scaleCrop)
+	    }
+
+
             //video
             var vdoNode = getTextByPathList(node, ["p:nvPicPr", "p:nvPr", "a:videoFile"]);
             var vdoRid, vdoFile, vdoFileExt, vdoMimeType, uInt8Array, blob, vdoBlob, mediaSupportFlag = false, isVdeoLink = false;
@@ -8637,13 +8680,14 @@
             //console.log(node)
             //////////////////////////////////////////////////////////////////////////
             mimeType = getMimeType(imgFileExt);
-            rtrnData = "<div class='block content' style='" +
+            rtrnData = "<div class='block content' style='overflow:hidden; " + // crop
                 ((mediaProcess && audioPlayerFlag) ? getPosition(audioObjc, node, undefined, undefined) : getPosition(xfrmNode, node, undefined, undefined)) +
                 ((mediaProcess && audioPlayerFlag) ? getSize(audioObjc, undefined, undefined) : getSize(xfrmNode, undefined, undefined)) +
                 " z-index: " + order + ";" +
                 "transform: rotate(" + rotate + "deg);'>";
             if ((vdoNode === undefined && audioNode === undefined) || !mediaProcess || !mediaSupportFlag) {
-                rtrnData += "<img src='data:" + mimeType + ";base64," + base64ArrayBuffer(imgArrayBuffer) + "' style='width: 100%; height: 100%'/>";
+                //rtrnData += "<img src='data:" + mimeType + ";base64," + base64ArrayBuffer(imgArrayBuffer) + "' style='width: 100%; height: 100%; margin-top:"+tcrop+"; margin-left:"+lcrop+";'/>";
+                rtrnData += "<img src='data:" + mimeType + ";base64," + base64ArrayBuffer(imgArrayBuffer) + "' style='max-width:"+scaleCrop+"; min-width:"+scaleCrop+"; width: "+scaleCrop+" !important; transform: translate("+lcrop+", "+tcrop+");'/>";
             } else if ((vdoNode !== undefined || audioNode !== undefined) && mediaProcess && mediaSupportFlag) {
                 if (vdoNode !== undefined && !isVdeoLink) {
                     rtrnData += "<video  src='" + vdoBlob + "' controls style='width: 100%; height: 100%'>Your browser does not support the video tag.</video>";
@@ -12271,6 +12315,20 @@
                 //prop_style += "background-position: 50% 40%;"; //offset (tx, ty) -TODO
             }
             //a:srcRect
+		// http://www.officeopenxml.com/drwPic-tile.php
+		/*
+            var crop = getTextByPathList(bgPr, ["a:blipFill", "a:srcRect"]);
+            if (crop !== undefined) {
+                var cropRect = getTextByPathList(crop, ["attrs"]);
+                var l = (parseInt(cropRect["l"]))
+                var t = (parseInt(cropRect["t"]))
+                var r = (parseInt(cropRect["r"]))
+                var b = (parseInt(cropRect["b"]))
+
+	    }
+	    */
+
+
             //a:stretch => a:fillRect =>attrs (l:-17000, r:-17000)
             var stretch = getTextByPathList(bgPr, ["a:blipFill", "a:stretch"]);
             if (stretch !== undefined) {
