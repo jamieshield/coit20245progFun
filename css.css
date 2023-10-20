@@ -45,7 +45,7 @@ label {background-color: blue;color: white;padding: 10px;margin:0px;display: inl
 /* Parsons */
 .ui-sortable {
     min-width: 350px; // right box is very jumpy
-    //min-height: 300px;
+    min-height: 300px; // mobile vertically jumpy
 }
 
 /* slides */
