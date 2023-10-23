@@ -49,15 +49,22 @@ label {background-color: blue;color: white;padding: 10px;margin:0px;display: inl
 }
 
 /* slides */
-.slide {
+.slideOuter {
 	border-radius: 20px !important;
 	padding: 10px;
 	margin: 1px;
 	border: 1px solid black !important;
 }
+.slide {
+	border: 0px;
+}
+.slide, .slideOuter {
+	width: fit-content;
+	height: fit-content;
+}
 .slide img {
 	//width:100%;
-	resize:both;
+	//resize:both;
 }
 //div.outline { display:none; }
 /*
@@ -77,3 +84,12 @@ label {background-color: blue;color: white;padding: 10px;margin:0px;display: inl
 .CodeMirror { 
 	resize: both !important;
 }
+
+.result, .showAllDiv {
+	width: fit-content;
+	min-width: 90%
+}
+body {
+	min-width: 600px !important;
+}
+
