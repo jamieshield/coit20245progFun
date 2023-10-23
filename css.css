@@ -91,5 +91,7 @@ label {background-color: blue;color: white;padding: 10px;margin:0px;display: inl
 }
 body {
 	min-width: 600px !important;
+	//width:fit-content;
+	width:900px;
 }
 
