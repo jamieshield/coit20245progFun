@@ -139,9 +139,9 @@ function setupPythonIDE (button,codeId,outputId,canvasId) {
 	let prg=$(button).closest(".maindiv")
 	let hiddencodePre=$(prg).find(".hiddenCodePre").text()
 	let hiddencodePost=$(prg).find(".hiddenCodePost")
-	console.log("pide:"+hiddencodePost)
+	console.log("pide:"+JSON.stringify(hiddencodePost))
 	hiddencodePost=hiddencodePost.text()
-	console.log("pide:"+hiddencodePost)
+	console.log("pide:"+JSON.stringify(hiddencodePost))
 
         stopit();
         clearit(button);
