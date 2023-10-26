@@ -104,8 +104,6 @@ function pptxLoadSlides(ppt) {
 }
 
 	  function deferPptx(method) {
-		console.log("defer")
-		return
 		if (window.jQuery) {
 			if (jQuery.fn.pptxToHtml) {
 					// assume ppt loaded
