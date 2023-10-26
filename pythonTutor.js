@@ -12,6 +12,7 @@ window.optOverride.demoDat = {"code":"list1 = ['This is', 'the only tool']\nlist
 
 var py$,pytutor;
 function hackpy($,pytutor_1,demoTrace) {
+	console.log("hackpy")
 	py$=$
 	pytutor=pytutor_1
 /*
@@ -42,7 +43,9 @@ $(document).ready(function () {
 }
 
 function pythonTutor(divId,startingInstruction,lang,stackTraceJson) {
+	console.log("pythonTutor")
 	//if ($(document).find('#'+divId).innerHTML!="") {
+	//	//console.log("pythonTutor already configured"+$(document).find('#'+divId).innerHTML!="")
 	//	return
 	//}
 
@@ -71,5 +74,6 @@ function cleanUnprintable(txt) {
 	//txt=txt.replace(/\n/g,"<br/>")
 	txt=txt.replace(/&lt;/g,"<")
 	txt=txt.replace(/&gt;/g,">")
+	//console.log(txt)
 	return txt                                                                 
 }

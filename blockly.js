@@ -42,7 +42,10 @@ var workspaceDict=new Object();
       try {
 	const pythonCode = python.pythonGenerator.workspaceToCode(workspace);
 	div.nextSibling.innerText="Python code:\n"+pythonCode
+	//console.log(pythonCode)
 	const blockjson=Blockly.serialization.workspaces.save(workspace)
+	console.log("head: runCode serialised")
+	console.log(JSON.stringify(blockjson))
       } catch (e) {
 	      // blocklyDiv serialisation error
         //alert(e);
@@ -57,8 +60,10 @@ var workspaceDict=new Object();
 
 function setupBlockly(divId,startCode,workspaceOptions,css,args) {
 	// https://github.com/google/blockly-samples/blob/master/examples/generator-demo/index.html
+	console.log("head Blockly"+divId)
 	const div=document.getElementById(divId)
 	if (div.innerHTML!="") {
+		//console.log("already configured"+div.innerHTML) // avoid reeval
 		return
 	}
 	const pythonOutput = document.createElement("pre")
@@ -79,6 +84,7 @@ function setupBlockly(divId,startCode,workspaceOptions,css,args) {
 	//const jsCode = javascript.javascriptGenerator.workspaceToCode(workspace);
 	let toolbox=workspaceOptions['toolbox']['contents']
 	for (let item of toolbox) {
+		console.log(item['type'])
 		if (item['type']=="allocate_variable") {
 			workspace.registerButtonCallback(item['callbackKey'], function (button) {Blockly.Variables.createVariableButtonHandler(button.getTargetWorkspace(), null, item['vartype']);} );
 		}

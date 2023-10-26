@@ -116,8 +116,10 @@ function setupPythonIDE (button,codeId,outputId,canvasId) {
         stopit();
         //var mypre = document.getElementById(outputId); 
         //var mypre = prog.find("#"+prog[0].id+"_"+outputId)[0]; 
+        console.log("#"+prog[0].id+"_"+outputId); 
         var mypre = $(document).find("#"+prog[0].id+"_"+outputId)[0]; 
         //var mypre = document.getElementById("#"+prog[0].id+"_"+outputId); 
+	console.log(mypre)
         mypre.innerHTML = "";   
         //var can = document.getElementById(canvasId);
         //var can = prog.find("#"+prog[0].id+"_"+canvasId)[0];
@@ -137,7 +139,9 @@ function setupPythonIDE (button,codeId,outputId,canvasId) {
 	let prg=$(button).closest(".maindiv")
 	let hiddencodePre=$(prg).find(".hiddenCodePre").text()
 	let hiddencodePost=$(prg).find(".hiddenCodePost")
+	console.log("pide:"+JSON.stringify(hiddencodePost))
 	hiddencodePost=hiddencodePost.text()
+	console.log("pide:"+JSON.stringify(hiddencodePost))
 
         stopit();
         clearit(button);
@@ -145,6 +149,7 @@ function setupPythonIDE (button,codeId,outputId,canvasId) {
         //var prog = editor.getValue(); 
         var prog = editr[prg[0].id].getValue(); 
 	var progWithHiddenCode = hiddencodePre+"\n"+prog+"\n"+hiddencodePost;
+	console.log("pide:proHidden"+progWithHiddenCode)
 
         //var mypre = document.getElementById(outputId); 
         var mypre = prg.find("#"+prg[0].id+"_"+outputId)[0]; 
@@ -210,6 +215,7 @@ function setupPythonIDE (button,codeId,outputId,canvasId) {
         });
 
         myPromise.then(function(mod) {
+        // console.log('success');
         },
            Sk.uncaughtException 
         );
@@ -225,7 +231,9 @@ function setupPythonIDE (button,codeId,outputId,canvasId) {
 	let prog=$(button).closest(".maindiv")
         //var textarea = document.getElementById(codeId);
         var textarea = prog.find("#"+codeId)[0];
+	//console.log(textarea)
         //editor = CodeMirror.fromTextArea(textarea, {
+        //console.log(prog[0].id)
         editr[prog[0].id] = CodeMirror.fromTextArea(textarea, {
             mode: {name: "python",
                    version: 2,

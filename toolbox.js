@@ -1047,10 +1047,13 @@ function getToolbox(elArr) {
 	  for (const template of simpleJson) {
 		  simple.push(template["type"])
 	  }
+	  console.log("Toolbox all types:")
+	  console.log(simple)
 	  return { "kind": "flyoutToolbox", "contents":  simpleJson  }
   }
   contents=[]
   for (const el of elArr) {
+	  console.log(el)
     for (const template of simpleJson) {
       if (template["type"]==el) {
         contents.push( template )
