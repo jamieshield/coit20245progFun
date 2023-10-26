@@ -14,6 +14,10 @@
 function pptxLoad() {
 (function ($) {
     $.fn.pptxToHtml = function (options) {
+        let js_font_size_fudge=-3;
+	let js_space_before_fudge=12;
+
+
 	let scripts="" // JS
 
         //var worker;
@@ -106,7 +110,7 @@ function pptxLoad() {
             $(document).bind("keydown", function (event) {
                 event.preventDefault();
                 var key = event.keyCode;
-                console.log(key, isDone)
+                //console.log(key, isDone)
                 if (key == 116 && !isSlideMode) { //F5
                     isSlideMode = true;
                     initSlideMode(divId, settings);
@@ -267,7 +271,7 @@ function pptxLoad() {
             var slidesWidt = $("#" + divId + " .slide").width();
             if (sScale != "") {
                 var numsScale = parseInt(sScale);
-		    console.log(numsScale)
+		    //console.log(numsScale)
                 var scaleVal = numsScale / 100;
                 if (settings.slideMode && settings.slideType != "revealjs") {
                     trnsfrmScl = 'transform:scale(' + scaleVal + '); transform-origin:top';
@@ -437,7 +441,9 @@ function pptxLoad() {
                     //remove "<![CDATA[ ... ]]>" tag
                     fileContent = fileContent.replace(/<!\[CDATA\[(.*?)\]\]>/g, '$1');
                 }
-                var xmlData = tXml(fileContent, { simplify: 1 });
+		// https://www.npmjs.com/package/txml
+                //var xmlData = tXml(fileContent, { simplify: 1, keepWhitespace: 1 });
+                var xmlData = tXml(fileContent, { simplify: 1 } )
                 if (xmlData["?xml"] !== undefined) {
                     return xmlData["?xml"];
                 } else {
@@ -580,6 +586,7 @@ function pptxLoad() {
 				    nfn=slideResObj[notes["attrs"]["Id"]]["target"]
 				    //console.log(nfn) // 
 				    notesXml= readXmlFile(zip, nfn);
+					//console.log("notes"+JSON.stringify(notesXml))  // p:notes
 
 				    notesNodes = notesXml["p:notes"]["p:cSld"]["p:spTree"];
 
@@ -791,7 +798,11 @@ function pptxLoad() {
 	    // process notes
 		// inputs zip, 
 		// outputs processNotes
-		let processNotes=processNodesInNotesSlide(notesNodes, warpObj)
+		let [processNotes,Notesnodes]=processNodesInNotesSlide(notesNodes, warpObj)
+		//console.log(processNotes)
+		//console.log(Notesnodes) // [p:...]
+		//console.log(notesNodes)
+		
 
 
 	    // end of process notes
@@ -820,15 +831,21 @@ function pptxLoad() {
 		//processNotesAll=processNotesAll.replace(/___[\s\S.]*$/,"")
 		// PPTXjs inserts [object Object]
 
+		processNotes=processNotesAll
+		processNotes=processNotes.replace(/&lt;/g,"<")
+		processNotes=processNotes.replace(/&gt;/g,">")
 		// lazy ? to get notes and html, e.g. div without scripts
-		processNotes=processNotesAll.replace(/\<script\>[\s\S.\n]*?\<\/script\>/g,"")
+		processNotes=processNotes.replace(/\<script\>[\t\s\S.\n]*?\<\/script\>/g,"")
 		// try again non lazy
 		//processNotes=processNotes.replace(/\<script\>[\s\S.]*\<\/script\>/g,"")
 		processNotes=processNotes.replace(/\<script\>/g,"")
 		processNotes=processNotes.replace(/\<\/script\>/g,"")
+		processNotes=processNotes.replace(/script/g,"")
+		processNotes=processNotes.replace(/script/g,"")
 
 
-		processNotesScripts=processNotesAll.replace(/\<\/script\>[\s\S.]*?\<script\>/g,"")
+		processNotesScripts=processNotesAll
+		processNotesScripts=processNotesScripts.replace(/\<\/script\>[\s\S.]*?\<script\>/g,"")
 		if (processNotesScripts.indexOf("<script>")<0) {
 		   processNotesScripts=""
 		}
@@ -842,6 +859,8 @@ function pptxLoad() {
 		    result+="<div class='notes'>"+processNotes+"</div>"
 			// slides seem to be moved so notes need to go inside
 	    result += "</div>" // slideAndNote
+            //console.log("unscripted:"+processNotes)
+            //console.log("scripted:"+processNotesScripts)
 
 
 	   return [result,processNotesScripts]
@@ -915,48 +934,113 @@ function pptxLoad() {
         }
 
         function processNodesInNotesSlide(notesNodes) {
+/* Example line breaks
+ 
+
+
+a:pPr/ , a:r a:rPr/ a:t * /a:t /a:r
+a:pPr/ , a:r a:rPr/ a:t * /a:t /a:r
+
+
+a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
+         a:rPr/,   a:t  , a:rPr/ a:t  a:br
+   a:rPr/ 
+
+ */
 
 	    let result=""
+	    let resultNodes=""
 	    let r=""
             for (var nodeKey in notesNodes) {
                 if (notesNodes[nodeKey].constructor === Array) {
 		    //console.log("descend into array")
                     for (var i = 0; i < notesNodes[nodeKey].length; i++) {
-			r=processNodesInNotesSlide(notesNodes[nodeKey][i])
+			[r,rn]=processNodesInNotesSlide(notesNodes[nodeKey][i])
+			//console.log(r.length)
                         result += r
+                        resultNodes += rn
                     }
                 } else {
+		    let printNodes=true
+		    let printAttrs=true
+		    if (printNodes && nodeKey!="attrs") { 
+			    resultNodes+= "["+nodeKey
+
+			    if (printAttrs && notesNodes[nodeKey]["attrs"]!=undefined) {
+				    resultNodes+= JSON.stringify(notesNodes[nodeKey]["attrs"])
+			    }
+			    resultNodes+= "]" 
+		    }
 		    switch (nodeKey) {
 			case "a:t":
-			case "a:p":   
-			case "a:rPr":   
-			case "a:pPr":   
 			    // hack - PPTXjs seems to convert ___ to some html
 				    //
 			    r=notesNodes[nodeKey]; //.toString()
-			    result+= r
+			    //console.log(r.length)
+			    if (r.length!=undefined) {
+				    result+= r
+				    resultNodes+= r
+			    } else {
+				    //console.log(r)
+				    //result+="FIX SPACES HERE"
+				    resultNodes+= "FIX SPACES HERE undefined a:t "
+                            }
+			    //result+= notesNodes[nodeKey].length; //.toString()
 			    break;
+
 			case "p:sp":
 			case "p:txBody":    
-		        case "a:endParaRPr": // some a:ps inside
+			//case "a:rPr":    // runlevel properties
 			case "a:r":   
-			    r= processNodesInNotesSlide(notesNodes[nodeKey])
+			    [r,rn]= processNodesInNotesSlide(notesNodes[nodeKey])
+			    //console.log(r.length)
 			    result += r
+			    resultNodes+= rn
+			    break;
+			/*case "a:rPr":    // runlevel properties
+			    r= processNodesInNotesSlide(notesNodes[nodeKey])
+			    //result += notesNodes[nodeKey]["attrs"]["err"]
+			    if (notesNodes[nodeKey]["attrs"]["err"]!=undefined) {
+			    } else {
+				    result += "\n"
+			    }
+			    result += r
+			    break;
+			    */
+
+			case "a:p":   
+			case "a:pPr":   
+			case "a:br":   
+			    [r,rn]= processNodesInNotesSlide(notesNodes[nodeKey])
+			    result += r
+			    resultNodes+= rn
 			    result += "\n"
+			    resultNodes += "\n"
+			    break;
+		        case "a:endParaRPr": // some a:ps inside
+			    result += "\n"
+			    resultNodes += "\n"
 			    break;
 		        case "a:ignoreendParaRPr": // some a:ps inside
-			    r = processNodesInNotesSlide(notesNodes[nodeKey])
+			    [r,rn] = processNodesInNotesSlide(notesNodes[nodeKey])
 			    result += r
+			    resultNodes+= rn
 			    break;
 			default:
-			    //console.log("ignoring "+nodeKey)
+			    if (printNodes && nodeKey!="attrs") { 
+				    //console.log("ignoring "+nodeKey)
+				    [r,rn]= processNodesInNotesSlide(notesNodes[nodeKey])
+				    result += r
+				    resultNodes+= rn
+			   }
 		    }
+		    if (printNodes && nodeKey!="attrs") { resultNodes+= "[/"+nodeKey+"]" }
                 }
             }
 	    
 
             //var text = node["a:t"];
-	    return result
+	    return [result,resultNodes]
 
 	}
         function processNodesInSlide(nodeKey, nodeValue, nodes, warpObj, source, sType) {
@@ -9642,6 +9726,13 @@ function pptxLoad() {
             }
             var font_size = getFontSize(node, textBodyNode, pFontStyle, lvl, type, warpObj);
             //text_style += "font-size:" + font_size + ";"
+            //console.log("pFontStyle")
+            //console.log(lvl)
+            //console.log(font_size)
+		// JS Fudge
+	    //if (lvl==1) { font_size=(parseInt(font_size)-)+"px" }
+	    font_size=(parseInt(font_size)+js_font_size_fudge)+"px" 
+            //console.log(font_size)
             
             text_style += "font-size:" + font_size + ";" +
                 // marLStr +
@@ -10261,6 +10352,7 @@ function pptxLoad() {
                 }
                 //////////////////////////////////////////////////////////////////////////////////
             
+	    tableHtml += "</table>";
 
             return tableHtml;
         }
@@ -10725,7 +10817,7 @@ function pptxLoad() {
             // }
             var isInLayoutOrMaster = true;
             if(type == "shape" || type == "textBox"){
-                isInLayoutOrMaster = false;
+                isInLayoutOrMaster = false; 
             }
             if (isInLayoutOrMaster && (spcBefNode === undefined || spcAftNode === undefined || lnSpcNode === undefined)) {
                 //check in layout
@@ -10836,13 +10928,16 @@ function pptxLoad() {
                             lnSpcNode = getTextByPathList(inLvlNode, ["a:pPr", "a:lnSpc", "a:spcPts", "attrs", "val"]);
                             if (lnSpcNode !== undefined) {
                                 lnSpcNodeType = "Pts";
-                            }
+			    }
                         }
                     }
                 }
             }
             var spcBefor = 0, spcAfter = 0, spcLines = 0;
             var marginTopBottomStr = "";
+	    if (lnSpcNode === undefined) { // JS Fudge factor
+		    marginTopBottomStr += "padding-top: "+js_space_before_fudge+"px;"
+		}
             if (spcBefNode !== undefined) {
                 spcBefor = parseInt(spcBefNode) / 100;
             }
@@ -10850,11 +10945,12 @@ function pptxLoad() {
                 spcAfter = parseInt(spcAftNode) / 100;
             }
             
+		let jsFudgeFactor=1; // JS issues with line spacing
             if (lnSpcNode !== undefined && fontSize !== undefined) {
                 if (lnSpcNodeType == "Pts") {
-                    marginTopBottomStr += "padding-top: " + ((parseInt(lnSpcNode) / 100) - fontSize) + "px;";//+ "pt;";
+                    marginTopBottomStr += "padding-top: " + ((parseInt(lnSpcNode) / 100)*jsFudgeFactor - fontSize) + "px;";//+ "pt;";
                 } else {
-                    var fct = parseInt(lnSpcNode) / 100000;
+                    var fct = parseInt(lnSpcNode)*jsFudgeFactor / 100000;
                     spcLines = fontSize * (fct - 1) - fontSize;// fontSize *
                     var pTop = (fct > 1) ? spcLines : 0;
                     var pBottom = (fct > 1) ? fontSize : 0;
