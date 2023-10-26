@@ -19,7 +19,6 @@
     // Saves the current state to the browser's store
     function storeProgram (button) {
 	let prog=$(button).closest(".maindiv")
-	//console.log(prog[0].id)
         localStorage.setItem("skulptIdeProgram"+prog[0].id, getProgram(button));
 
         //localStorage.setItem("skulptIdeProgramName"+prog, document.getElementById("savefilename").value);
@@ -97,8 +96,6 @@
         //editor.on('change', function(cm) {changeCount++;});
 
         // Set the initial program
-	//console.log("in setup")
-	//console.log(parms.program)
         setProgram (button,parms.program);
 
         // Reset the change Counter
@@ -116,7 +113,6 @@
     // Loads program from a given url using XMLHttprequest (must be on the same domain)
     function loadUrl (button,parms,url) {
         function reqListener () {
-            //console.log(url+" loaded");
             parms.program = this.responseText;
             setup (button,parms);
         }
@@ -149,8 +145,6 @@
     }
 
     function setup_(button,parms) {
-	//console.log("setup_")
-	//console.log(parms.program)
 	let prog=$(button).closest(".maindiv")
 
 	    // Load the program name into the box
@@ -222,8 +216,6 @@
 	    } 
 	    else { 
 		// Load the initial program
-		//console.log("setup")
-		//console.log(parms.program)
 		setup(button,parms);
 	    }
 
@@ -239,7 +231,6 @@
 
 	}
 
-	//console.log($("#drawline").find(".button")[0])
 	//setup_($("#drawline").find(".button")[0],parms1)
 	//setup_($("#drawline2").find(".button")[0],parms2)
 

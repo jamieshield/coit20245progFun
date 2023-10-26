@@ -8,7 +8,6 @@
             }
         }
         function setupParsons(idd,initial) {
-		console.log("mod Parsons"+idd)
 		let div='<div height="100px" id="sortableTrash'+idd+'" class="sortable-code"></div><div id="sortable'+idd+'" class="sortable-code"></div><div style="clear:both;"></div><p><label id="newInstanceLink'+idd+'">New instance</label> &nbsp; &nbsp; <label id="feedbackLink'+idd+'"">Get feedback</label></p>';
 		$(document).find("#"+idd).append(div);
 		setupParsons_(idd,initial);

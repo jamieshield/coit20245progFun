@@ -1,14 +1,7 @@
         function setupSkulpt(idd,prog,args) {
-	  console.log("moreJs setupSkulp"+idd)
 		//if ($(document).find("#"+idd).innerHTML!=undefined) {
-			//console.log("skulpt already configured")
-			//console.log($(document).find("#"+idd))
-			//console.log($(document).find("#"+idd).innerHTML)
 		//	return
 		//}
-	  //console.log(prog)
-	    //console.log(typeof(Storage) !== "undefined")
-		//console.log(localStorage.getItem("skulptIdeProgram"+idd))
 	 let parms3 = {
 		program :  // Initial skulpt program to show in the editor
 		    //typeof(Storage) !== "undefined" && localStorage.getItem("skulptIdeProgram"+idd) ||
@@ -74,9 +67,6 @@
 	`;
 
 
-	//console.log(idd);
-	//console.log(prog);
-	//console.log(template);
 	template=template.replaceAll("drawline",idd)
 	template=template.replaceAll("program.py",idd+".py")
 
@@ -90,7 +80,6 @@
 	if (args["hiddenCodePost"]==undefined) {
 		hiddenCodePost=""
 	}
-	console.log("more:hcpost"+hiddenCodePost)
 	template=template.replaceAll("HIDDENTEXTPOST",hiddenCodePost)
 
 	$(document).find("#"+idd).append(template);
@@ -100,22 +89,17 @@
 	$(document).ready(function() { 
 		for (let item of Object.keys(args)) {
 			parms3[item]=args[item]
-			//console.log(item+":"+args[item])
 		}
-		//console.log(JSON.parse(JSON.stringify(parms3)))
-		//console.log(parms3)
 		//if ($("#"+idd).find(".button")[0]==undefined) {
 		//	return // pptxjs premature evals
 		//}
 		 setup_($("#"+idd).find(".button")[0],parms3)
-		console.log("CodeMirror:"+args["height"])
 		//template=template.replaceAll("20",args["rows"])
 		//$(document).find("#"+idd).find(".CodeMirror").css("height:100%")
 		//$(document).find("#"+idd).find(".editor").css("height",args["height"])
 		 $(document).find("#"+idd).find(".CodeMirror").css("min-height",args["height"])
 		 $(document).find("#"+idd).find(".CodeMirror").css("height",args["height"])
 		 $(document).find("#"+idd).find(".CodeMirror").css("resize","both")
-		 //console.log($("#"+idd).find(".button")[0])
 	});
 		
 	}
