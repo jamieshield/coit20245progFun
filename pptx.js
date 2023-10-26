@@ -107,7 +107,6 @@ function pptxLoadSlides(ppt) {
 		if (window.jQuery) {
 			if (jQuery.fn.pptxToHtml) {
 					// assume ppt loaded
-					console.log(ppt)
 					try {
 						method(ppt);
 					} catch(e) {
