@@ -96,6 +96,7 @@ function pptxLoadSlides(ppt) {
 }
 
 	  function deferPptx(method) {
+		return
 		if (window.jQuery) {
 			if (jQuery.fn.pptxToHtml) {
 					// assume ppt loaded
