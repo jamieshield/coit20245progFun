@@ -1,3 +1,8 @@
+
+	  //
+	  //
+	  //
+	  //
 	  //http://www.competentedigitale.ro/blockly/demos/toolbox/index.html
 	  //https://github.com/google/blockly/issues/4464
  let fullToolbox=[
@@ -430,6 +435,7 @@
         {
           "kind": "block",
           "type": "lists_indexOf",
+          "inline": false,
           "inputs": {
             "VALUE": {
               "block": {
@@ -608,9 +614,15 @@
 
 	{"kind":"block", "type": "variables_get", "message0": "%1", "args0": [ { "type": "field_variable", "name": "VAR", "variable": "%{BKY_VARIABLES_DEFAULT_NAME}" } ], "output": null, "colour": "%{BKY_VARIABLES_HUE}", "helpUrl": "%{BKY_VARIABLES_GET_HELPURL}", "tooltip": "%{BKY_VARIABLES_GET_TOOLTIP}", "extensions": ["contextMenu_variableSetterGetter"] },
 	 {"kind":"block", "type": "variables_set", "message0": "%{BKY_VARIABLES_SET}", "args0": [ { "type": "field_variable", "name": "VAR", "variable": "%{BKY_VARIABLES_DEFAULT_NAME}" }, { "type": "input_value", "name": "VALUE" } ], "previousStatement": null, "nextStatement": null, "colour": "%{BKY_VARIABLES_HUE}", "tooltip": "%{BKY_VARIABLES_SET_TOOLTIP}", "helpUrl": "%{BKY_VARIABLES_SET_HELPURL}", "extensions": ["contextMenu_variableSetterGetter"] },
+   /*{ "kind": "button",  "type":"allocate_variable","text": "Allocate string variable",  "callbackKey": "allocateStringVariable", "vartype":"string"},
+   { "kind": "button",  "type":"allocate_variable","text": "Allocate int variable",  "callbackKey": "allocateIntVariable", "vartype":"int"},
+   { "kind": "button",  "type":"allocate_variable","text": "Allocate float variable",  "callbackKey": "allocateFloatVariable", "vartype":"float"},
+   { "kind": "button",  "type":"allocate_variable","text": "Allocate list variable",  "callbackKey": "allocateListVariable", "vartype":"list"},
+   { "kind": "button",  "type":"allocate_variable","text": "Allocate boolean variable",  "callbackKey": "allocateBooleanVariable", "vartype":"boolean"},*/
+   { "kind": "button",  "type":"allocate_variable","text": "Allocate variable",  "callbackKey": "allocateVariable","vartype":"string" },
 
 
-  ]
+  ];
 
 
 
@@ -1007,3 +1019,54 @@
     },
 	  
 	  */
+
+
+
+
+
+function getToolbox(elArr) {
+	// just an editor hack
+	/*
+	[
+    "controls_if", "logic_compare", "logic_operation", "logic_negate", "logic_boolean", "logic_null", "logic_ternary",
+    "controls_repeat_ext", "controls_whileUntil", "controls_for", "controls_forEach", "controls_flow_statements",
+    "math_number", "math_arithmetic", "math_single", "math_trig", "math_constant", "math_number_property", "math_round", "math_on_list", "math_modulo", "math_constrain", "math_random_int", "math_random_float", "math_atan2",
+    "text", "text_join", "text_append", "text_length", "text_isEmpty", "text_indexOf", "text_charAt", "text_getSubstring", "text_changeCase", "text_trim", "text_print", "text_prompt_ext",
+    "lists_create_with", "lists_create_with", "lists_repeat", "lists_length", "lists_isEmpty", "lists_indexOf", "lists_getIndex", "lists_setIndex", "lists_getSublist", "lists_split", "lists_sort",
+    // lists_create_empty
+    "colour_picker", "colour_random", "colour_rgb", "colour_blend",
+    null,
+    "procedures",
+...
+]
+
+*/
+ let simpleJson=fullToolbox
+  if (elArr.length==0) {
+	  simple=[]
+	  for (const template of simpleJson) {
+		  simple.push(template["type"])
+	  }
+	  console.log("Toolbox all types:")
+	  console.log(simple)
+	  return { "kind": "flyoutToolbox", "contents":  simpleJson  }
+  }
+  contents=[]
+  for (const el of elArr) {
+	  console.log(el)
+    for (const template of simpleJson) {
+      if (template["type"]==el) {
+        contents.push( template )
+      }
+    }
+    if (false) {
+      switch (el) {
+        case "lists_create_empty_ignore":
+
+  	  contents.push( { "kind": "block", "type": el })
+        default:
+      }
+   }
+  }
+  return { "kind": "flyoutToolbox", "contents":  contents  }
+}
