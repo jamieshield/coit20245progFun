@@ -104,6 +104,8 @@ function setupPythonIDE (button,codeId,outputId,canvasId) {
 
     // What to use to read from input
     function builtinRead(x) {
+	console.log("read "+x)
+	if (x=="a.txt") { return "Hello world\n"; }
         if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
                 throw "File not found: '" + x + "'";
         return Sk.builtinFiles["files"][x];

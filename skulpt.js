@@ -125,24 +125,33 @@
 Sk.externalLibraries = {
       numpy : {
         //path: 'https://raw.githubusercontent.com/ebertmi/skulpt_numpy/master/numpy/__init__.js',
-        path: 'https://cdn.jsdelivr.net/gh/ebertmi/skulpt_numpy@master/dist/numpy/__init__.js',
+        //path: 'https://cdn.jsdelivr.net/gh/ebertmi/skulpt_numpy@master/dist/numpy/__init__.js',
+        path: numpyJS,
       },
       'numpy.random' : {
         //path: 'https://raw.githubusercontent.com/ebertmi/skulpt_numpy/master/numpy/random/__init__.js',
-        path: 'https://cdn.jsdelivr.net/gh/ebertmi/skulpt_numpy@master/dist/numpy/random/__init__.min.js',
+        //path: 'https://cdn.jsdelivr.net/gh/ebertmi/skulpt_numpy@master/dist/numpy/random/__init__.min.js',
+        path: numpyrandomJS,
       },
       matplotlib : {
         //path: 'https://raw.githubusercontent.com/ebertmi/skulpt_matplotlib/master/matplotlib/__init__.js',
-        path: 'https://cdn.jsdelivr.net/gh/ebertmi/skulpt_matplotlib@master/matplotlib/__init__.js',
+        //path: 'https://cdn.jsdelivr.net/gh/ebertmi/skulpt_matplotlib@master/matplotlib/__init__.js',
+        path: matplotlibJS,
       },
       'matplotlib.pyplot' : {
         //path: 'https://raw.githubusercontent.com/ebertmi/skulpt_matplotlib/master/matplotlib/pyplot/__init__.js',
-        path: 'https://cdn.jsdelivr.net/gh/ebertmi/skulpt_matplotlib@master/matplotlib/pyplot/__init__.js',
+        //path: 'https://cdn.jsdelivr.net/gh/ebertmi/skulpt_matplotlib@master/matplotlib/pyplot/__init__.js',
+        path: matplotlibpyplotJS,
         dependencies: [
           //'https://raw.githubusercontent.com/ebertmi/skulpt_matplotlib/master/deps/d3.min.js',
           //'https://raw.githubusercontent.com/ebertmi/skulpt_matplotlib/master/deps/jquery.js',
         ],
       },
+      'a.txt' : {
+        path: "a.txt",
+      },
+
     };
+
 
 
