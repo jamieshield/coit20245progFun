@@ -7,6 +7,7 @@
 
 /* select slide and button immediately after selected radio button */
 .section:checked + .slideAndButtons { display: block; }  /* show selected section/slide */
+//.section:checked + .slideAndButtons { background-color: red; }  /* show selected section/slide */
 
 /* hide the buttons */
 /* if showallsections selected, then select the showalldiv sometime after (other buttons in between) - ... */
@@ -23,7 +24,7 @@
 
 
 /* select showalldiv any preceded by .hideslides */
-.hideslides:checked ~ .showalldiv .slide { display: none !important; }
+.hideslides:checked ~ .showalldiv .slideOuter { display: none !important; }
 .notesTitle { 
 	display: none 
 	font-size:20px; 
@@ -54,13 +55,15 @@ label {background-color: blue;color: white;padding: 10px;margin:0px;display: inl
 	padding: 10px;
 	margin: 1px;
 	border: 1px solid black !important;
+	width: 640px;
+}
+.slideOuter {
 }
 .slide {
+	width: 1280px !important;
+	height: 360px !important;
 	border: 0px;
-}
-.slide, .slideOuter {
-	width: fit-content;
-	height: fit-content;
+	overflow: visible;
 }
 .slide img {
 	//width:100%;
