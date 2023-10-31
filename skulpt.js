@@ -1,4 +1,11 @@
+
+
+        var hackDontRepeat=[]
         function setupSkulpt(idd,prog,args) {
+	  if (hackDontRepeat.indexOf(idd)>=0) { 
+		  console.log("moreJs setupSkulp"+idd+" repeated")
+		return }
+	  hackDontRepeat=hackDontRepeat.concat([idd])
 	  console.log("moreJs setupSkulp"+idd)
 		//if ($(document).find("#"+idd).innerHTML!=undefined) {
 			//console.log("skulpt already configured")

@@ -12,6 +12,7 @@
 		   let sc=document.createElement('script')
 	            scrpt=scrpt.replace(/\<\/script\>/,"\n")
 		    scrpt=scrpt.replace(/\<script\>/,"\n")
+		   	scrpt=scrpt.replaceAll("\\t"," ").replaceAll("¶",'\n')
 		   sc.text = scrpt 
 		   	console.log(scrpt)
 		   document.head.appendChild(sc)

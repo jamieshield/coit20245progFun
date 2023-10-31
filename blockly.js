@@ -58,6 +58,11 @@ var workspaceDict=new Object();
       }
     }
 
+function setupDlockly(divId,startCode,workspaceOptions,css,args) {
+	let extraToolbox=workspaceOptions['toolbox']
+	workspaceOptions['toolbox']=getToolboxStart(startCode,extraToolbox)
+	setupBlockly(divId,startCode,workspaceOptions,css,args)
+}
 function setupBlockly(divId,startCode,workspaceOptions,css,args) {
 	// https://github.com/google/blockly-samples/blob/master/examples/generator-demo/index.html
 	console.log("head Blockly"+divId)

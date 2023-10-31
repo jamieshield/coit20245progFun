@@ -1022,7 +1022,77 @@
 
 
 
+/*
 
+{
+  "blocks": { "blocks": [
+      {
+        "type": "variables_set",
+        "inputs": {
+          "VALUE": {
+            "block": {
+              "type": "lists_split",...
+            }
+          }
+        },
+
+        "next": {
+
+          "block": { }
+      },
+
+      {
+        "type": "lists_setIndex",
+        "fields": {
+          "MODE": "SET",
+          "WHERE": "FROM_START"
+        },
+        "inputs": {
+          "LIST": {
+            "block": {
+            }
+          }
+        }
+      },
+
+      {
+        "type": "lists_split",...
+      },
+      {
+        "type": "variables_set"
+      }
+    ]
+  }
+}
+ * */
+function getToolboxStart(startBlock,extra) {
+	function onlyUnique(value, index, array) {
+	  return array.indexOf(value) === index;
+	}
+	return getToolbox((extra.concat(getToolboxStartHelp(startBlock))).filter(onlyUnique))
+}
+function getToolboxStartHelp(startBlock) {
+   let elArr = []
+   if (Array.isArray(startBlock)) {
+	    for (const block of startBlock) {
+		elArr=elArr.concat(getToolboxStartHelp(block))
+	    }
+	    return elArr
+   } else if (startBlock.constructor == Object) { 
+	// https://stackoverflow.com/questions/34913675/how-to-iterate-keys-values-in-javascript
+	for (const [key, value] of Object.entries(startBlock)) {
+	  if (key=="type") { 
+		elArr=elArr.concat([value])
+	  } else {
+		elArr=elArr.concat(getToolboxStartHelp(value))
+	  }
+	}
+	return elArr
+   }
+   // not an array or dictionary
+   return elArr
+  
+}
 
 function getToolbox(elArr) {
 	// just an editor hack
