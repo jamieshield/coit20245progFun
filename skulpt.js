@@ -115,12 +115,19 @@
 		//	return // pptxjs premature evals
 		//}
 		 setup_($("#"+idd).find(".button")[0],parms3)
-		console.log("CodeMirror:"+args["height"])
+		let height=args["height"]
+		if (height == null) {
+			lineHeightPx=25
+			console.log("CodeMirror box height undefined")
+			height=(prog.split(/\r\n|\r|\n/).length*lineHeightPx)+"px"
+		}
+		console.log("CodeMirror box height:"+height)
+
 		//template=template.replaceAll("20",args["rows"])
 		//$(document).find("#"+idd).find(".CodeMirror").css("height:100%")
 		//$(document).find("#"+idd).find(".editor").css("height",args["height"])
-		 $(document).find("#"+idd).find(".CodeMirror").css("min-height",args["height"])
-		 $(document).find("#"+idd).find(".CodeMirror").css("height",args["height"])
+		 $(document).find("#"+idd).find(".CodeMirror").css("min-height",height)
+		 $(document).find("#"+idd).find(".CodeMirror").css("height",height)
 		 $(document).find("#"+idd).find(".CodeMirror").css("resize","both")
 		 //console.log($("#"+idd).find(".button")[0])
 	});

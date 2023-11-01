@@ -8656,6 +8656,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
             return points;
         }
         */
+	var hackLastAltText=""
         function processPicNode(node, warpObj, source, sType) {
             //console.log("processPicNode node:", node, "source:", source, "sType:", sType, "warpObj;", warpObj);
             var rtrnData = "";
@@ -8729,6 +8730,33 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
             if (vdoNode !== undefined & mediaProcess) {
                 vdoRid = vdoNode["attrs"]["r:link"];
                 vdoFile = resObj[vdoRid]["target"];
+		console.log("pptxjs vdoFile:" + vdoFile)
+		console.log(node)
+		console.log(JSON.stringify(node))
+		if (vdoFile.indexOf("file://")==0) {
+			var altText = getTextByPathList(node, ["p:nvPicPr", "p:cNvPr", "attrs", "descr"]);
+			if (altText=="") {
+				altText=hackLastAltText // not every video needs to have an alt text inserted
+			} else {
+				hackLastAltText=altText
+			}
+			//console.log(altText)
+			if (altText.indexOf("http")==0) {
+				// remap vdOFile to altText link
+				altText=altText.replace("https://github.com/","https://cdn.jsdelivr.net/gh/")
+				let lastDir=altText.match(/[^\/]*$/) // python-sneks
+				if (lastDir.length>0) {
+					lastDir=lastDir[0]
+					console.log(lastDir)
+					let found=vdoFile.indexOf(lastDir)
+					if (found>0) { // found a common subdir
+						vdoFile=altText.substring(0,found)+vdoFile.substring(vdoFile.indexOf(lastDir)+lastDir.length)
+						vdoFile=vdoFile.replace('\\','/')
+						console.log("pptxjs vdoFile:" + vdoFile)
+					}
+				}
+			}
+		}
                 var checkIfLink = IsVideoLink(vdoFile);
                 if (checkIfLink) {
                     vdoFile = escapeHtml(vdoFile);
@@ -14400,7 +14428,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                 return true;
             }
             */
-            var urlregex = /^(https?|ftp):\/\/([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/;
+            var urlregex = /^(file|https?|ftp):\/\/([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/;
             return urlregex.test(vdoFile);
         }
 
