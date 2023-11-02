@@ -75,7 +75,6 @@
 
 function pptxLoadSlides(ppt) {
 	console.log("pptx Loading slides")
-	$=window.jQuery;
    $("#result").pptxToHtml({
 	//pptxFileUrl: sample12,
 	pptxFileUrl: ppt,
@@ -108,7 +107,7 @@ function pptxLoadSlides(ppt) {
 
 	  function deferPptx(method) {
 		if (window.jQuery) {
-			if (jQuery.fn.pptxToHtml) {
+			if (window.jQuery.fn.pptxToHtml) {
 					// assume ppt loaded
 					try {
 						method(ppt);
