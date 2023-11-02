@@ -799,6 +799,16 @@ function pptxLoad() {
                 result += "<div class='slideInner' style='"  + bgColor + "'>"
             }
             result += bgResult;
+	    
+	    // process notes
+		// inputs zip, 
+		// outputs processNotes
+		let [processNotes,Notesnodes]=processNodesInNotesSlide(notesNodes, warpObj)
+		//console.log(processNotes)
+		//console.log(Notesnodes) // [p:...]
+		//console.log(notesNodes)
+	    // end of process notes
+
             for (var nodeKey in nodes) {
                 if (nodes[nodeKey].constructor === Array) {
                     for (var i = 0; i < nodes[nodeKey].length; i++) {
@@ -809,17 +819,6 @@ function pptxLoad() {
                 }
             }
 
-	    // process notes
-		// inputs zip, 
-		// outputs processNotes
-		let [processNotes,Notesnodes]=processNodesInNotesSlide(notesNodes, warpObj)
-		//console.log(processNotes)
-		//console.log(Notesnodes) // [p:...]
-		//console.log(notesNodes)
-		
-
-
-	    // end of process notes
 
 	    result += "</div>" // bkground?
 
@@ -1052,6 +1051,15 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
 		    if (printNodes && nodeKey!="attrs") { resultNodes+= "[/"+nodeKey+"]" }
                 }
             }
+
+	    let foundVid=result.indexOf("!vid:")
+	    if (foundVid>0) {
+	    	let endVid=result.indexOf("!",foundVid+2) // skip first !
+		if (endVid>0) {
+			hackLastAltText=result.substring(foundVid+5,endVid-foundVidi-len("!vid:"))
+		    console.log("notes: hackla"+ hackLastAltText)
+		}
+	    }
 	    
 
             //var text = node["a:t"];
@@ -8731,17 +8739,44 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                 vdoRid = vdoNode["attrs"]["r:link"];
                 vdoFile = resObj[vdoRid]["target"];
 		console.log("pptxjs vdoFile:" + vdoFile)
-		console.log(node)
-		console.log(JSON.stringify(node))
+		//console.log(JSON.stringify(node))
 		if (vdoFile.indexOf("file://")==0) {
 			var altText = getTextByPathList(node, ["p:nvPicPr", "p:cNvPr", "attrs", "descr"]);
+			if (altText=="") {
+				
+			}
 			if (altText=="") {
 				altText=hackLastAltText // not every video needs to have an alt text inserted
 			} else {
 				hackLastAltText=altText
 			}
-			//console.log(altText)
-			if (altText.indexOf("http")==0) {
+			console.log("alttext"+altText)
+			if (altText==null) {altText=""}
+			if (offline) { 
+				// vdoFile:file://G:\ MyDrive\coit20246progFun\github_acbart_sneks\python-sneks ->
+				//vdoFile:\github_acbart_sneks\python-sneks ->
+				vdoFile=vdoFile.replace("file:///G:\\My%20Drive\\coit20246progFun","..")
+				console.log("offline:"+vdoFile)
+			}
+			if (altText.indexOf("http")<0 && !offline) {
+				// form an altText from vdoFile
+				// vdoFile:file://G:\ MyDrive\coit20246progFun\github_acbart_sneks\python-sneks ->
+				// altText:https://cdn.jsdelivr.net/gh/acbart/python-sneks
+				// . is backslash
+				let github=vdoFile.match(/github_+([^_]+)_+/)
+				console.log(github)
+				github=vdoFile.match(/github_+([^_\\]+)_+[^_\\]+\\([^\\]+)\\/)
+				console.log(github)
+				if (github!=null) {
+					let account=github[1]
+					let repo=github[2]
+					console.log("account"+account)
+					console.log("repo"+repo)
+					altText="https://github.com/"+account+"/"+repo
+				}
+			}
+				
+			if (altText.indexOf("http")==0 && !offline) {
 				// remap vdOFile to altText link
 				altText=altText.replace("https://github.com/","https://cdn.jsdelivr.net/gh/")
 				let lastDir=altText.match(/[^\/]*$/) // python-sneks
@@ -8830,7 +8865,9 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                 if (vdoNode !== undefined && !isVdeoLink) {
                     rtrnData += "<video  src='" + vdoBlob + "' controls style='width: 100%; height: 100%'>Your browser does not support the video tag.</video>";
                 } else if (vdoNode !== undefined && isVdeoLink) {
-                    rtrnData += "<iframe   src='" + vdoFile + "' controls style='width: 100%; height: 100%'></iframe >";
+                    rtrnData += "<video  src='" + vdoFile + "' controls style='width: 100%; height: 100%'>Your browser does not support the video tag.</video>";
+			// JS why iframe?
+                    //rtrnData += "<iframe   src='" + vdoFile + "' controls style='width: 100%; height: 100%'></iframe >";
                 }
                 if (audioNode !== undefined) {
                     rtrnData += '<audio id="audio_player" controls ><source src="' + audioBlob + '"></audio>';
@@ -14428,6 +14465,9 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                 return true;
             }
             */
+	    if (vdoFile.indexOf(".")==0) { return true; }
+	    if (vdoFile.indexOf("/")==0) { return true; } // absolute link
+	    if (vdoFile.indexOf("\\")==0) { return true; } // absolute link
             var urlregex = /^(file|https?|ftp):\/\/([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/;
             return urlregex.test(vdoFile);
         }

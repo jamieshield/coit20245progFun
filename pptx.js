@@ -112,13 +112,16 @@ function pptxLoadSlides(ppt) {
 						method(ppt);
 					} catch(e) {
 					  //e; // => ReferenceError
-					  setTimeout(function() { deferPptx(method) }, 50);
+					  console.log("deferring no pptxLoadSlides")
+					  setTimeout(function() { deferPptx(method) }, 100);
 					}
 			} else {
-				setTimeout(function() { deferPptx(method) }, 50);
+				  console.log("deferring no pptxToHtml")
+				setTimeout(function() { deferPptx(method) }, 100);
 			}
 		} else {
-			setTimeout(function() { deferPptx(method) }, 50);
+			console.log("deferring no jqyery")
+			setTimeout(function() { deferPptx(method) }, 100);
 		}
 
 	}
