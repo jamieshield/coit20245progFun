@@ -8740,6 +8740,10 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                 vdoFile = resObj[vdoRid]["target"];
 		console.log("pptxjs vdoFile:" + vdoFile)
 		//console.log(JSON.stringify(node))
+		if (vdoFile==null) { 
+			console.log("pptxjs null vdofule")
+			vdoFile="" 
+		}
 		if (vdoFile.indexOf("file://")==0) {
 			var altText = getTextByPathList(node, ["p:nvPicPr", "p:cNvPr", "attrs", "descr"]);
 			if (altText==null) {altText=""}
