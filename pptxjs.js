@@ -14512,8 +14512,10 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
 
 function deferJqueryPpt(method) {
 	if (window.jQuery) {
+		console.log("pptxjs load pptxLoad with jQuery")
 		method();
 	} else {
+		console.log("pptxjs defer pptxLoad no jQuery")
 		setTimeout(function() { deferJqueryPpt(method) }, 50);
 	}
 }
