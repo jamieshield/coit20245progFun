@@ -74,6 +74,7 @@
   }
 
 function pptxLoadSlides(ppt) {
+	console.log("pptx Loading slides")
    $("#result").pptxToHtml({
 	//pptxFileUrl: sample12,
 	pptxFileUrl: ppt,
