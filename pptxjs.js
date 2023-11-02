@@ -8742,16 +8742,13 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
 		//console.log(JSON.stringify(node))
 		if (vdoFile.indexOf("file://")==0) {
 			var altText = getTextByPathList(node, ["p:nvPicPr", "p:cNvPr", "attrs", "descr"]);
-			if (altText=="") {
-				
-			}
+			if (altText==null) {altText=""}
 			if (altText=="") {
 				altText=hackLastAltText // not every video needs to have an alt text inserted
 			} else {
 				hackLastAltText=altText
 			}
 			console.log("alttext"+altText)
-			if (altText==null) {altText=""}
 			if (offline) { 
 				// vdoFile:file://G:\ MyDrive\coit20246progFun\github_acbart_sneks\python-sneks ->
 				//vdoFile:\github_acbart_sneks\python-sneks ->
