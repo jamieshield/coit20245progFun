@@ -118,10 +118,10 @@
 		let height=args["height"]
 		if (height == null) {
 			lineHeightPx=25
-			console.log("CodeMirror box height undefined")
+			//console.log("CodeMirror box height undefined")
 			height=(prog.split(/\r\n|\r|\n/).length*lineHeightPx)+"px"
 		}
-		console.log("CodeMirror box height:"+height)
+		//console.log("CodeMirror box height:"+height)
 
 		//template=template.replaceAll("20",args["rows"])
 		//$(document).find("#"+idd).find(".CodeMirror").css("height:100%")

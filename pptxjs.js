@@ -14519,4 +14519,4 @@ function deferJqueryPpt(method) {
 		setTimeout(function() { deferJqueryPpt(method) }, 50);
 	}
 }
-deferJqueryPpt(pptxLoad)
+//deferJqueryPpt(pptxLoad) - let pptx load it

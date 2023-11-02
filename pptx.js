@@ -108,18 +108,20 @@ function pptxLoadSlides(ppt) {
 	  function deferPptx(method) {
 		if (window.jQuery) {
 			if (window.jQuery.fn.pptxToHtml) {
-			} else {
-				  console.log("no deferring though no pptxToHtml")
-				//setTimeout(function() { deferPptx(method) }, 100);
-			}
 					// assume ppt loaded
 					try {
 						method(ppt);
 					} catch(e) {
 					  //e; // => ReferenceError
 					  console.log("deferring no pptxLoadSlides")
+					  console.log(e)
 					  setTimeout(function() { deferPptx(method) }, 100);
 					}
+			} else {
+				  console.log("deferring no pptxToHtml")
+				   pptxLoad() // pptxjs - new jquery? reload pptxToHtml
+				setTimeout(function() { deferPptx(method) }, 100);
+			}
 		} else {
 			console.log("deferring no jqyery")
 			setTimeout(function() { deferPptx(method) }, 100);
