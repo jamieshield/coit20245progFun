@@ -89,7 +89,7 @@ function setupBlockly(divId,startCode,workspaceOptions,css,args) {
 	//const jsCode = javascript.javascriptGenerator.workspaceToCode(workspace);
 	let toolbox=workspaceOptions['toolbox']['contents']
 	for (let item of toolbox) {
-		console.log(item['type'])
+		//console.log(item['type'])
 		if (item['type']=="allocate_variable") {
 			workspace.registerButtonCallback(item['callbackKey'], function (button) {Blockly.Variables.createVariableButtonHandler(button.getTargetWorkspace(), null, item['vartype']);} );
 		}

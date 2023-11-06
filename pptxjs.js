@@ -1325,17 +1325,18 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                 result += '<defs>'
                 // Fill Color
                 var fillColor = getShapeFill(node, pNode, true, warpObj, source);
-                //console.log("genShape: fillColor: ", fillColor)
+                console.log("genShape: fillColor: ", fillColor)
+                console.log(JSON.stringify(node))
                 var grndFillFlg = false;
                 var imgFillFlg = false;
                 var clrFillType = getFillType(getTextByPathList(node, ["p:spPr"]));
                 if (clrFillType == "GROUP_FILL") {
                     clrFillType = getFillType(getTextByPathList(pNode, ["p:grpSpPr"]));
                 }
-                // if (clrFillType == "") {
-                //     var clrFillType = getFillType(getTextByPathList(node, ["p:style","a:fillRef"]));
-                // }
-                //console.log("genShape: fillColor: ", fillColor, ", clrFillType: ", clrFillType, ", node: ", node)
+                 if (clrFillType == "") {
+                     var clrFillType = getFillType(getTextByPathList(node, ["p:style","a:fillRef"]));
+                 }
+                console.log("genShape: fillColor: ", fillColor, ", clrFillType: ", clrFillType, ", node: ", node)
                 /////////////////////////////////////////                    
                 if (clrFillType == "GRADIENT_FILL") {
                     grndFillFlg = true;
@@ -1374,6 +1375,8 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                             shapType == "rightBracket")) { //Temp. solution  - TODO
                         fillColor = "none";
                     }
+                    console.log("genShape: else: ", svgGrdnt)
+                    //JS fillColor = "none";
                 }
                 // Border Color
                 var border = getBorder(node, pNode, true, "shape", warpObj);
@@ -1454,6 +1457,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                     var triangleMarker = "<marker id='markerTriangle_" + shpId + "' viewBox='0 0 10 10' refX='1' refY='5' markerWidth='5' markerHeight='5' stroke='" + border.color + "' fill='" + border.color +
                         "' orient='auto-start-reverse' markerUnits='strokeWidth'><path d='M 0 0 L 10 5 L 0 10 z' /></marker>";
                     result += triangleMarker;
+			console.log("FILL 1")
                 }
                 result += '</defs>'
             }
@@ -1465,6 +1469,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                     case "flowChartPredefinedProcess":
                     case "flowChartInternalStorage":
                     case "actionButtonBlank":
+			//console.log("FILL 2"+fillColor)
                         result += "<rect x='0' y='0' width='" + w + "' height='" + h + "' fill='" + (!imgFillFlg ? (grndFillFlg ? "url(#linGrd_" + shpId + ")" : fillColor) : "url(#imgPtrn_" + shpId + ")") +
                             "' stroke='" + border.color + "' stroke-width='" + border.width + "' stroke-dasharray='" + border.strokeDasharray + "' " + oShadowSvgUrlStr + "  />";
 
@@ -1481,6 +1486,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                             " L" + 0 + "," + h +
                             " L" + w + "," + h +
                             " z";
+			console.log("FILL 3")
                         result += "<path d='" + d + "'  fill='" + (!imgFillFlg ? (grndFillFlg ? "url(#linGrd_" + shpId + ")" : fillColor) : "url(#imgPtrn_" + shpId + ")") +
                             "' stroke='" + border.color + "' stroke-width='" + border.width + "' stroke-dasharray='" + border.strokeDasharray + "' />";
 
@@ -1496,6 +1502,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                             " L" + w + "," + y1 +
                             " C" + x1 + "," + y1 + " " + x1 + "," + y3 + " " + 0 + "," + y2 +
                             " z";
+			console.log("FILL 4")
                         result += "<path d='" + d + "'  fill='" + (!imgFillFlg ? (grndFillFlg ? "url(#linGrd_" + shpId + ")" : fillColor) : "url(#imgPtrn_" + shpId + ")") +
                             "' stroke='" + border.color + "' stroke-width='" + border.width + "' stroke-dasharray='" + border.strokeDasharray + "' />";
                         break;
@@ -1533,6 +1540,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                             " L" + w + "," + y7 +
                             " C" + x7 + "," + y7 + " " + x2 + "," + y9 + " " + x2 + "," + y9;
 
+			console.log("FILL 5")
                         result += "<path d='" + d + "'  fill='" + (!imgFillFlg ? (grndFillFlg ? "url(#linGrd_" + shpId + ")" : fillColor) : "url(#imgPtrn_" + shpId + ")") +
                             "' stroke='" + border.color + "' stroke-width='" + border.width + "' stroke-dasharray='" + border.strokeDasharray + "' />";
                         break;
@@ -1555,6 +1563,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                             " L" + g12 + "," + g10 +
                             " z";
 
+			console.log("FILL 6")
                         result += "<path d='" + d + "'  fill='" + (!imgFillFlg ? (grndFillFlg ? "url(#linGrd_" + shpId + ")" : fillColor) : "url(#imgPtrn_" + shpId + ")") +
                             "' stroke='" + border.color + "' stroke-width='" + border.width + "' stroke-dasharray='" + border.strokeDasharray + "' />";
 
@@ -1588,6 +1597,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                             " L" + g16 + "," + g10 +
                             " z";
 
+			console.log("FILL 7")
                         result += "<path d='" + d + "'  fill='" + (!imgFillFlg ? (grndFillFlg ? "url(#linGrd_" + shpId + ")" : fillColor) : "url(#imgPtrn_" + shpId + ")") +
                             "' stroke='" + border.color + "' stroke-width='" + border.width + "' stroke-dasharray='" + border.strokeDasharray + "' />";
 
@@ -1621,6 +1631,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                             " L" + g12 + "," + g15 +
                             " z";
 
+			console.log("FILL 8")
                         result += "<path d='" + d + "'  fill='" + (!imgFillFlg ? (grndFillFlg ? "url(#linGrd_" + shpId + ")" : fillColor) : "url(#imgPtrn_" + shpId + ")") +
                             "' stroke='" + border.color + "' stroke-width='" + border.width + "' stroke-dasharray='" + border.strokeDasharray + "' />";
 
@@ -1654,6 +1665,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                             " L" + g11 + "," + g10 +
                             " z";
 
+			console.log("FILL 9")
                         result += "<path d='" + d + "'  fill='" + (!imgFillFlg ? (grndFillFlg ? "url(#linGrd_" + shpId + ")" : fillColor) : "url(#imgPtrn_" + shpId + ")") +
                             "' stroke='" + border.color + "' stroke-width='" + border.width + "' stroke-dasharray='" + border.strokeDasharray + "' />";
 
@@ -1678,6 +1690,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                             " L" + g11 + "," + g10 +
                             " z";
 
+			console.log("FILL 10")
                         result += "<path d='" + d + "'  fill='" + (!imgFillFlg ? (grndFillFlg ? "url(#linGrd_" + shpId + ")" : fillColor) : "url(#imgPtrn_" + shpId + ")") +
                             "' stroke='" + border.color + "' stroke-width='" + border.width + "' stroke-dasharray='" + border.strokeDasharray + "' />";
 
@@ -1732,6 +1745,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                             shapeArc(hc, cY3, g42, g42, 270, 630, false).replace("M", "L") +
                             " z";
 
+			console.log("FILL 11")
                         result += "<path d='" + d + "'  fill='" + (!imgFillFlg ? (grndFillFlg ? "url(#linGrd_" + shpId + ")" : fillColor) : "url(#imgPtrn_" + shpId + ")") +
                             "' stroke='" + border.color + "' stroke-width='" + border.width + "' stroke-dasharray='" + border.strokeDasharray + "' />";
 
@@ -1790,6 +1804,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                             " L" + g29 + "," + g10 +
                             " z";
 
+			console.log("FILL 12")
                         result += "<path d='" + d + "'  fill='" + (!imgFillFlg ? (grndFillFlg ? "url(#linGrd_" + shpId + ")" : fillColor) : "url(#imgPtrn_" + shpId + ")") +
                             "' stroke='" + border.color + "' stroke-width='" + border.width + "' stroke-dasharray='" + border.strokeDasharray + "' />";
 
@@ -4695,7 +4710,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                         pang = Math.atan(sdy / sdx);
                         stAng = pang + angVal1;
                         enAng = pang - angVal1;
-                        console.log("dxPos: ", dxPos, "dyPos: ", dyPos)
+                        //console.log("dxPos: ", dxPos, "dyPos: ", dyPos)
                         dx1 = hc * Math.cos(stAng);
                         dy1 = vc * Math.sin(stAng);
                         dx2 = hc * Math.cos(enAng);
@@ -5191,6 +5206,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
 
                         //console.log("shapType: ", shapType, ",isBorder:", isBorder)
                         //if(isBorder){
+			console.log("FILL 12")
                         result += "<path d='" + d_val + "' fill='" + (!imgFillFlg ? (grndFillFlg ? "url(#linGrd_" + shpId + ")" : fillColor) : "url(#imgPtrn_" + shpId + ")") +
                             "' stroke='" + border.color + "' stroke-width='" + border.width + "' stroke-dasharray='" + border.strokeDasharray + "' />";
 
@@ -5900,6 +5916,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                             " L" + x1 + "," + y4 +
                             " L" + x1 + "," + y5 + " z";
 
+			console.log("FILL 13"+fillColor)
                         result += "<path d='" + d_val + "' fill='" + (!imgFillFlg ? (grndFillFlg ? "url(#linGrd_" + shpId + ")" : fillColor) : "url(#imgPtrn_" + shpId + ")") +
                             "' stroke='" + border.color + "' stroke-width='" + border.width + "' stroke-dasharray='" + border.strokeDasharray + "' />";
 
@@ -9401,6 +9418,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                     //     styleText += "background-color: #" + bultColor[3] + ";";
                     // }
                 } else if (color_tye == "pattern" || color_tye == "pic" || color_tye == "gradient") {
+			console.log("GRADIENT COLOUR 1")
                     if (color_tye == "pattern") {
                         bullet += "background:" + bultColor[0][0] + ";";
                         if (bultColor[0][1] !== null && bultColor[0][1] !== undefined && bultColor[0][1] != "") {
@@ -9422,6 +9440,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                         //     "-webkit-text-stroke: " + bultColor[1].border + ";";
 
                     } else if (color_tye == "gradient") {
+			console.log("GRADIENT COLOUR 2")
 
                         var colorAry = bultColor[0].color;
                         var rot = bultColor[0].rot;
@@ -9757,6 +9776,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                     styleText += "background-color: #" + fontClrPr[3] + ";";
                 }
             } else if (fontClrType == "pattern" || fontClrType == "pic" || fontClrType == "gradient") {
+			console.log("GRADIENT COLOUR 3")
                 if (fontClrType == "pattern") {
                     styleText += "background:" + fontClrPr[0][0] + ";";
                     if (fontClrPr[0][1] !== null && fontClrPr[0][1] !== undefined && fontClrPr[0][1] != "") {
@@ -9777,6 +9797,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                     //     "color: transparent;" +
                     //     "-webkit-text-stroke: " + fontClrPr[1].border + ";";
                 } else if (fontClrType == "gradient") {
+			console.log("GRADIENT COLOUR 4")
 
                     var colorAry = fontClrPr[0].color;
                     var rot = fontClrPr[0].rot;
@@ -11318,6 +11339,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                 } else if (filTyp == "GRADIENT_FILL") {
                     var shpFill = rPrNode["a:gradFill"];
                     color = getGradientFill(shpFill, warpObj);
+			console.log(color)
                     colorType = "gradient";
                 } 
             }
@@ -12228,7 +12250,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                             //console.log("bgcolor: ", bgcolor)
                             bgcolor = "background: #" + sldBgClr + ";";
                         } else if (bgFillTyp == "GRADIENT_FILL") {
-                            //console.log("GRADIENT_FILL: ", bgFillLstIdx, phClr)
+                            console.log("GRADIENT_FILL: ", bgFillLstIdx, phClr)
                             bgcolor = getBgGradientFill(bgFillLstIdx, phClr, slideMasterContent, warpObj);
                         } else if (bgFillTyp == "PIC_FILL") {
                             //theme rels
@@ -12603,7 +12625,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
             if (fillColor !== undefined) {
                 if (fillType == "GRADIENT_FILL") {
                     if (isSvgMode) {
-                        // console.log("GRADIENT_FILL color", fillColor.color[0])
+                         //console.log("GRADIENT_FILL color", fillColor.color[0])
                         return fillColor;
                     } else {
                         var colorAry = fillColor.color;
@@ -12649,7 +12671,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                     if (isSvgMode) {
                         var color = tinycolor(fillColor);
                         fillColor = color.toRgbString();
-
+			
                         return fillColor;
                     } else {
                         //console.log(node,"fillColor: ",fillColor,"fillType: ",fillType,"isSvgMode: ",isSvgMode)
@@ -12675,6 +12697,8 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
             //PATTERN_FILL
             //NO_FILL
             var fillType = "";
+		// JS
+		if (node==null) { return "NO_FILL" }
             if (node["a:noFill"] !== undefined) {
                 fillType = "NO_FILL";
             }

@@ -1123,7 +1123,7 @@ function getToolbox(elArr) {
   }
   contents=[]
   for (const el of elArr) {
-	  console.log(el)
+	  //console.log(el)
     for (const template of simpleJson) {
       if (template["type"]==el) {
         contents.push( template )
