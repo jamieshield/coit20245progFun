@@ -74,6 +74,7 @@
   }
 
 function pptxLoadSlides(ppt) {
+	console.log("pptx Loading slides")
    $("#result").pptxToHtml({
 	//pptxFileUrl: sample12,
 	pptxFileUrl: ppt,
@@ -106,19 +107,24 @@ function pptxLoadSlides(ppt) {
 
 	  function deferPptx(method) {
 		if (window.jQuery) {
-			if (jQuery.fn.pptxToHtml) {
+			if (window.jQuery.fn.pptxToHtml) {
 					// assume ppt loaded
 					try {
 						method(ppt);
 					} catch(e) {
 					  //e; // => ReferenceError
-					  setTimeout(function() { deferPptx(method) }, 50);
+					  console.log("deferring no pptxLoadSlides")
+					  console.log(e)
+					  setTimeout(function() { deferPptx(method) }, 100);
 					}
 			} else {
-				setTimeout(function() { deferPptx(method) }, 50);
+				  console.log("deferring no pptxToHtml")
+				   pptxLoad() // pptxjs - new jquery? reload pptxToHtml
+				setTimeout(function() { deferPptx(method) }, 100);
 			}
 		} else {
-			setTimeout(function() { deferPptx(method) }, 50);
+			console.log("deferring no jqyery")
+			setTimeout(function() { deferPptx(method) }, 100);
 		}
 
 	}
