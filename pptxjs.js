@@ -122,6 +122,9 @@ function pptxLoad(windowjQuery) {
         }
         FileReaderJS.setSync(false);
         if (settings.pptxFileUrl != "") {
+		console.log("window.JSZipUtils")
+		console.log(window.JSZipUtils)
+		console.log("JSZipUtils")
 		console.log(JSZipUtils)
             try{
                 JSZipUtils.getBinaryContent(settings.pptxFileUrl, function (err, content) {
