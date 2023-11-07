@@ -122,25 +122,25 @@ function pptxLoad(windowjQuery) {
         }
         FileReaderJS.setSync(false);
         if (settings.pptxFileUrl != "") {
-		console.log("window.JSZipUtils")
-		console.log(window.JSZipUtils)
-		console.log("JSZipUtils")
-		console.log(JSZipUtils)
+		//console.log("window.JSZipUtils")
+		//console.log(window.JSZipUtils)
+		//console.log("JSZipUtils")
+		//console.log(JSZipUtils)
             try{
                 JSZipUtils.getBinaryContent(settings.pptxFileUrl, function (err, content) {
-			console.log("pptxjs blobbed")
+			//console.log("pptxjs blobbed")
                     var blob = new Blob([content]);
                     var file_name = settings.pptxFileUrl;
-			console.log("pptxjs file_name"+file_name.substring(0,100))
+			//console.log("pptxjs file_name"+file_name.substring(0,100))
                     var fArry = file_name.split(".");
                     fArry.pop();
                     blob.name = fArry[0];
-			console.log("pptxjs blob.name"+blob.name)
+			//console.log("pptxjs blob.name"+blob.name)
                     FileReaderJS.setupBlob(blob, {
                         readAsDefault: "ArrayBuffer",
                         on: {
                             load: function (e, file) {
-                                console.log(e.target.result);
+                                //console.log(e.target.result);
                                 convertToHtml(e.target.result);
 
                             }
@@ -1335,8 +1335,8 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                 result += '<defs>'
                 // Fill Color
                 var fillColor = getShapeFill(node, pNode, true, warpObj, source);
-                console.log("genShape: fillColor: ", fillColor)
-                console.log(JSON.stringify(node))
+                //console.log("genShape: fillColor: ", fillColor)
+                //console.log(JSON.stringify(node))
                 var grndFillFlg = false;
                 var imgFillFlg = false;
                 var clrFillType = getFillType(getTextByPathList(node, ["p:spPr"]));
@@ -1346,7 +1346,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                  if (clrFillType == "") {
                      var clrFillType = getFillType(getTextByPathList(node, ["p:style","a:fillRef"]));
                  }
-                console.log("genShape: fillColor: ", fillColor, ", clrFillType: ", clrFillType, ", node: ", node)
+                //console.log("genShape: fillColor: ", fillColor, ", clrFillType: ", clrFillType, ", node: ", node)
                 /////////////////////////////////////////                    
                 if (clrFillType == "GRADIENT_FILL") {
                     grndFillFlg = true;
@@ -1385,7 +1385,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                             shapType == "rightBracket")) { //Temp. solution  - TODO
                         fillColor = "none";
                     }
-                    console.log("genShape: else: ", svgGrdnt)
+                    //console.log("genShape: else: ", svgGrdnt)
                     //JS fillColor = "none";
                 }
                 // Border Color
@@ -1467,7 +1467,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                     var triangleMarker = "<marker id='markerTriangle_" + shpId + "' viewBox='0 0 10 10' refX='1' refY='5' markerWidth='5' markerHeight='5' stroke='" + border.color + "' fill='" + border.color +
                         "' orient='auto-start-reverse' markerUnits='strokeWidth'><path d='M 0 0 L 10 5 L 0 10 z' /></marker>";
                     result += triangleMarker;
-			console.log("FILL 1")
+			//console.log("FILL 1")
                 }
                 result += '</defs>'
             }

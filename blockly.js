@@ -27,9 +27,13 @@ var workspaceDict=new Object();
 	const workspace = workspaceDict[divId].workspace
 	const args = workspaceDict[divId].args
 	let codePost = ""
+	//let runpython=true;
 	if (args!=undefined) {
 		if (args.codePost!=undefined) {
 			codePost=args.codePost
+		}
+		if (args.python!=undefined) {
+			runpython=false;
 		}
 	}	
 	
@@ -40,9 +44,13 @@ var workspaceDict=new Object();
       var code = javascript.javascriptGenerator.workspaceToCode(workspace);
       javascript.javascriptGenerator.INFINITE_LOOP_TRAP = null;
       try {
-	const pythonCode = python.pythonGenerator.workspaceToCode(workspace);
-	div.nextSibling.innerText="Python code:\n"+pythonCode
-	//console.log(pythonCode)
+        if (runpython) {
+		const pythonCode = python.pythonGenerator.workspaceToCode(workspace);
+		div.nextSibling.innerText="Python code:\n"+pythonCode
+		//console.log(pythonCode)
+	} else {
+		div.nextSibling.innerText=""
+	}
 	const blockjson=Blockly.serialization.workspaces.save(workspace)
 	console.log("head: runCode serialised")
 	console.log(JSON.stringify(blockjson))
