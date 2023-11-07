@@ -754,7 +754,6 @@ function pptxLoad(windowjQuery) {
 		   //processNotesScripts=""
 		   return ["",""]
 	   }
-	    js_slideIndex_hack++;
 
             var nodes = slideContent["p:sld"]["p:cSld"]["p:spTree"];
             var warpObj = {
@@ -774,6 +773,18 @@ function pptxLoad(windowjQuery) {
                 "diagramResObj": diagramResObj,
                 "defaultTextStyle": defaultTextStyle
             };
+	    // process notes
+		// inputs zip, 
+		// outputs processNotes
+		let [processNotes,Notesnodes]=processNodesInNotesSlide(notesNodes, warpObj)
+		//console.log(processNotes)
+		//console.log(Notesnodes) // [p:...]
+		//console.log(notesNodes)
+	    // end of process notes
+	    if (modHandleNotes(processNotes)) {
+		   return ["",""]
+	    }
+	    js_slideIndex_hack++;
             var bgResult = "";
             if (processFullTheme === true) {
                 bgResult = getBackground(warpObj, slideSize, index);
@@ -783,6 +794,7 @@ function pptxLoad(windowjQuery) {
             if (processFullTheme == "colorsAndImageOnly") {
                 bgColor = getSlideBackgroundFill(warpObj, index);
             }
+
 
 	    //console.log(index);  // hidden slides skip index
 	    let ndex=js_slideIndex_hack;
@@ -807,24 +819,15 @@ function pptxLoad(windowjQuery) {
             }
             result += bgResult;
 	    
-	    // process notes
-		// inputs zip, 
-		// outputs processNotes
-		let [processNotes,Notesnodes]=processNodesInNotesSlide(notesNodes, warpObj)
-		//console.log(processNotes)
-		//console.log(Notesnodes) // [p:...]
-		//console.log(notesNodes)
-	    // end of process notes
-
-            for (var nodeKey in nodes) {
-                if (nodes[nodeKey].constructor === Array) {
-                    for (var i = 0; i < nodes[nodeKey].length; i++) {
-                        result += processNodesInSlide(nodeKey, nodes[nodeKey][i], nodes, warpObj, "slide");
-                    }
-                } else {
-                    result += processNodesInSlide(nodeKey, nodes[nodeKey], nodes, warpObj, "slide");
-                }
-            }
+	    for (var nodeKey in nodes) {
+		if (nodes[nodeKey].constructor === Array) {
+		    for (var i = 0; i < nodes[nodeKey].length; i++) {
+			result += processNodesInSlide(nodeKey, nodes[nodeKey][i], nodes, warpObj, "slide");
+		    }
+		} else {
+		    result += processNodesInSlide(nodeKey, nodes[nodeKey], nodes, warpObj, "slide");
+		}
+	    }
 
 
 	    result += "</div>" // bkground?
