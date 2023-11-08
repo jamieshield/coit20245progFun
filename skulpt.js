@@ -97,7 +97,7 @@
 	if (args["hiddenCodePost"]==undefined) {
 		hiddenCodePost=""
 	}
-	console.log("more:hcpost"+hiddenCodePost)
+	//console.log("more:hcpost"+hiddenCodePost)
 	template=template.replaceAll("HIDDENTEXTPOST",hiddenCodePost)
 
 	$(document).find("#"+idd).append(template);
