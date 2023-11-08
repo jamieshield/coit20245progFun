@@ -553,6 +553,7 @@ function pptxLoad(windowjQuery) {
 	var notCheckedHack=true
 	var js_slideIndex_hack=0;
         function processSingleSlide(zip, sldFileName, index, slideSize) {
+		let notesNodes=null; // hack
             /*
             self.postMessage({
                 "type": "INFO",
@@ -776,6 +777,7 @@ function pptxLoad(windowjQuery) {
 	    // process notes
 		// inputs zip, 
 		// outputs processNotes
+		if (notesNodes==null) { return ["",""] }
 		let [processNotes,Notesnodes]=processNodesInNotesSlide(notesNodes, warpObj)
 		//console.log(processNotes)
 		//console.log(Notesnodes) // [p:...]
@@ -5216,7 +5218,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
 
                         //console.log("shapType: ", shapType, ",isBorder:", isBorder)
                         //if(isBorder){
-			console.log("FILL 12")
+			//console.log("FILL 12")
                         result += "<path d='" + d_val + "' fill='" + (!imgFillFlg ? (grndFillFlg ? "url(#linGrd_" + shpId + ")" : fillColor) : "url(#imgPtrn_" + shpId + ")") +
                             "' stroke='" + border.color + "' stroke-width='" + border.width + "' stroke-dasharray='" + border.strokeDasharray + "' />";
 
