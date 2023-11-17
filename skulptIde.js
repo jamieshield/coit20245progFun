@@ -106,8 +106,9 @@
 
         // Arrange to run it automatically if requested
         if (parms.autoRun) {
+		console.log("autorun turned off")
             //setTimeout(function() { runit(button) }, 50)
-            $(document).ready(function() { runit(button); });
+            //$(document).ready(function() { runit(button); });
         }
     }
 
@@ -158,7 +159,9 @@
 	    prog.find("#savefilename")[0].value = parms.programName;
 
 	    // Whether to start the program immediately
-	    parms.autoRun = getParameter("autorun") || getParameter("autoRun");
+	    //parms.autoRun = getParameter("autorun") || getParameter("autoRun");
+		//console.log("parms.autoRun")
+		//console.log(parms)
 
 	    // Whether to hide the IDE 
 	    parms.hideIde = getParameter("hideide") || getParameter("hideIde") ||
@@ -222,7 +225,7 @@
 	    } 
 	    else { 
 		// Load the initial program
-		//console.log("setup")
+		console.log("setup")
 		//console.log(parms.program)
 		setup(button,parms);
 	    }

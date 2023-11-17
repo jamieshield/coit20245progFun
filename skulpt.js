@@ -87,6 +87,7 @@
 	template=template.replaceAll("drawline",idd)
 	template=template.replaceAll("program.py",idd+".py")
 
+
 	let hiddenCodePre=args["hiddenCodePre"]
 	if (args["hiddenCodePre"]==undefined) {
 		hiddenCodePre=""
@@ -109,7 +110,7 @@
 			parms3[item]=args[item]
 			//console.log(item+":"+args[item])
 		}
-		//console.log(JSON.parse(JSON.stringify(parms3)))
+		console.log(JSON.parse(JSON.stringify(parms3)))
 		//console.log(parms3)
 		//if ($("#"+idd).find(".button")[0]==undefined) {
 		//	return // pptxjs premature evals
