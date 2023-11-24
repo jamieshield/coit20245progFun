@@ -87,7 +87,7 @@ function resolveContext(player,edit,type) {
 	console.assert(startFloor>=0,"start>=0 "+start)
 	let text=getText(player)
 	endCeiling=Math.min(text.length,end+contextChars)
-	if (edit.hasOwnProperty('context')) {
+	if (false && edit.hasOwnProperty('context')) {
 		/*
 			contextChars=10
 			player.text="abc def ghi     abc def ghi" 

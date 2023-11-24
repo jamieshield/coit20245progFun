@@ -98,3 +98,91 @@ body {
 	//width:1000px;
 }
 
+
+/* python tutor */
+.ignoreExecutionVisualizer {
+/*
+	border: 1px solid black;
+	border-radius: 5px;
+	background: lightblue;
+*/
+}
+#codeDisplayDiv { 
+	/*border: 1px solid black;
+	border-radius: 5px;
+	*/
+	background: lightyellow;
+}
+
+.visLayoutTd, #dataViv { 
+	/*border: 1px solid black;
+	border-radius: 5px;
+	*/
+	background: white;
+}
+
+/* skulpt */
+.movie {
+	padding: 25px;
+}
+.setupCodePlayer::before, .setupPythonTutor::before, .setupSkulpt::before, .setupProg::before, .optionalvideo::before, .optionalreading::before {
+	font-family: 'FontAwesome';
+	font-weight: 900;
+	font-size: 20px;
+	position: relative;
+	left: -30px;
+	top: 0px;
+}
+.setupParsons::before {
+	left: -760px;
+	top: 25px;
+}
+.setupProg::before {
+	content: "\f059"; /* circle question */
+}
+.setupSkulpt::before {
+	content: "\f120"; /* terminal */
+	top: 25px;
+}
+.setupCodePlayer::before {
+	content: "\f144"; /* circle player */
+}
+.setupPythonTutor::before {
+	content: "\f2db"; /* microchip */
+	top: 25px;
+}
+.optionalvideo::before {
+	content: "\f03d"; /* video */
+}
+.optionalreading::before {
+	content: "\f02d"; /* book */
+}
+
+
+.setupProg, .optionalvideo, .optionalreading {
+	margin-top: 10px;
+	padding: 20px;
+	padding-left: 40px;
+	border: 1px solid black;
+	border-radius: 5px;
+	background: lightblue;
+}
+.setupSkulpt, .setupPythonTutor, .setupParsons {
+	padding-top: 0px;
+}
+#centralarea, #outputpanel {
+	border: 1px solid black;
+	border-radius: 5px;
+	background: white;
+	margin: 2px;
+}
+.notes {
+	background: rgb(240,240,240);
+	margin-top:10px;
+	margin-bottom:30px;
+}
+
+.imagelink:hover img {
+	padding: 6px;
+	background: red;
+}

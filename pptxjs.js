@@ -8883,6 +8883,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
             //console.log(node)
             //////////////////////////////////////////////////////////////////////////
             mimeType = getMimeType(imgFileExt);
+		// 
             rtrnData = "<div class='block content' style='overflow:hidden; " + // crop
                 ((mediaProcess && audioPlayerFlag) ? getPosition(audioObjc, node, undefined, undefined) : getPosition(xfrmNode, node, undefined, undefined)) +
                 ((mediaProcess && audioPlayerFlag) ? getSize(audioObjc, undefined, undefined) : getSize(xfrmNode, undefined, undefined)) +
@@ -8890,7 +8891,16 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                 "transform: rotate(" + rotate + "deg);'>";
             if ((vdoNode === undefined && audioNode === undefined) || !mediaProcess || !mediaSupportFlag) {
                 //rtrnData += "<img src='data:" + mimeType + ";base64," + base64ArrayBuffer(imgArrayBuffer) + "' style='width: 100%; height: 100%; margin-top:"+tcrop+"; margin-left:"+lcrop+";'/>";
+		imagelinkRid = getTextByPathList(node, ["p:nvPicPr", "p:cNvPr", "a:hlinkClick","attrs","r:id"]);
+		imageLin=""
+		if (imagelinkRid != undefined) {
+			imageLink = resObj[imagelinkRid]["target"]; // https:...
+			rtrnData += "<a target='_blank' class='imagelink' href='"+imageLink+"'>"
+		}
                 rtrnData += "<img src='data:" + mimeType + ";base64," + base64ArrayBuffer(imgArrayBuffer) + "' style='max-width:"+scaleCrop+"; min-width:"+scaleCrop+"; width: "+scaleCrop+" !important; transform: translate("+lcrop+", "+tcrop+");'/>";
+		if (imagelinkRid != undefined) {
+			rtrnData += "</a>"
+		}
             } else if ((vdoNode !== undefined || audioNode !== undefined) && mediaProcess && mediaSupportFlag) {
                 if (vdoNode !== undefined && !isVdeoLink) {
                     rtrnData += "<video  src='" + vdoBlob + "' controls style='width: 100%; height: 100%'>Your browser does not support the video tag.</video>";
