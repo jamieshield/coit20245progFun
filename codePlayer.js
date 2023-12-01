@@ -199,8 +199,27 @@ function updateDiv(player) {
 	player.messageDiv.innerHTML=text
 }
 
+function enableStepButtons() {
+		let btns=document.getElementsByClassName("stepButton")
+	//console.log("enable")
+	//console.log(btns);
+		for (let b of btns) {
+			b.disabled=false;
+		}
+}
+
+	function disableStepButtons() {
+		let btns=document.getElementsByClassName("stepButton")
+		for (let b of btns) {
+			b.disabled=true;
+		}
+	}
+
+var codePlayerStep=false // 1 step
 function setMessage(player,message) {
 	player.message=message
+	codePlayerStep=false;
+	enableStepButtons()
 	updateDiv(player)
 }
 
@@ -263,15 +282,19 @@ async function setupCodePlayer(divIdPlayer,edits,maxlines) {
 	//console.log(actionsArray)
 	//let textarea=document.getElementsByClassName("edit")[0]
 	let playerDiv=document.getElementById(divIdPlayer)
+	//console.log(playerDiv.style.minheight)
+	if (playerDiv.style.minheight!=undefined) { return } // don't run twice
 	playerDiv.style.minheight=maxlines*20+"px"
 	playerDiv.innerHTML=`<div>
 	<button onclick="codePlayerSpeed=codePlayerSpeed/2; console.log(codePlayerSpeed); if (codePlayerSpeed<0) { codePlayerSpeed=0;}  ">Faster</button>
 	<button onclick="codePlayerSpeed++; codePlayerSpeed=codePlayerSpeed*2; console.log(codePlayerSpeed); if (codePlayerSpeed<0) { codePlayerSpeed=0;}  ">Slower</button>
-	<button onclick="codePlayerPause=true;  ">Stop</button>
-	<button onclick="codePlayerPause=false;">Go</button>
+	<button onclick="codePlayerPause=true; enableStepButtons();">Stop</button>
+	<button onclick="codePlayerPause=false; ">Go</button>
+	<button class="stepButton" onclick="codePlayerStep=true; disableStepButtons();">Step</button>
 	<div class="codePlayerMessage" style=""></div>
 	<div class="codePlayerPlayer" style="min-height: 200px; font-family:monospace"></div>
 `
+
 	let editor=playerDiv.getElementsByClassName("codePlayerPlayer")[0]
 	let messageDiv=playerDiv.getElementsByClassName("codePlayerMessage")[0]
 	//let orig=textarea.value
@@ -281,17 +304,16 @@ async function setupCodePlayer(divIdPlayer,edits,maxlines) {
     while (true) {
 	//setText(player,orig)
 	for (let [editi,edit] of actionsArray.entries()) {
-		while (codePlayerPause) {
-			await blink(player,1)
+		while (codePlayerPause && !codePlayerStep) {
+			await blink(player,2)
 		}
 		let repeat=1
 		if (edit.hasOwnProperty('repeat')) { repeat=edit.repeat }
 		switch (edit.type) {
-			case "settext":
-				setMessage(player,edit.mess)
+			case "settext": // wholesale rewrite
 				setText(player,edit.text)
+				setMessage(player,edit.mess)
 				await blink(player,4)
-				//setMessage(player,"")
 				break;
 			//{"type":"caret","position":0}
 			case "caret":
@@ -333,11 +355,11 @@ async function setupCodePlayer(divIdPlayer,edits,maxlines) {
 			//{"type":"pause","delay":1980}
 			case "pause":
 				if (edit.hasOwnProperty("mess")) {
+					console.log("pause")
+					console.log(edit.mess)
 					setMessage(player,edit.mess)
-					//await blink(player,3)
 				}
 				await blink(player,edit.delay/2000)
-				//setMessage(player,"")
 				break;
 			//{"type":"deleteContentBackward"}
 			case "deleteContentBackward":
@@ -357,7 +379,7 @@ async function setupCodePlayer(divIdPlayer,edits,maxlines) {
 		//await blink(player,1)
 	}
 	setMessage(player,"The end")
-	console.log(JSON.stringify(actionsArray))
+	//console.log(JSON.stringify(actionsArray))
 	await blink(player,10)
     } // while
 }

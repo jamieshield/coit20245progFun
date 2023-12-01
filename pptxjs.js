@@ -777,8 +777,19 @@ function pptxLoad(windowjQuery) {
 	    // process notes
 		// inputs zip, 
 		// outputs processNotes
-		if (notesNodes==null) { return ["",""] }
-		let [processNotes,Notesnodes]=processNodesInNotesSlide(notesNodes, warpObj)
+		let processNotes
+		let Notesnodes
+		if (notesNodes==null) { 
+			processNotes=""
+			Notesnodes=""
+			//console.log("no notes")
+			//console.log(processNotes)
+		} else {	
+			[processNotes,Notesnodes]=processNodesInNotesSlide(notesNodes, warpObj)
+			//console.log("notes")
+			//console.log(processNotes)
+			//console.log(processNotes)
+		}
 		//console.log(processNotes)
 		//console.log(Notesnodes) // [p:...]
 		//console.log(notesNodes)
@@ -974,6 +985,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
 
  */
 
+	    if (JSON.stringify(notesNodes)==undefined) { return ["",""] }
 	    let result=""
 	    let resultNodes=""
 	    let r=""
@@ -1001,7 +1013,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
 			case "a:t":
 			    // hack - PPTXjs seems to convert ___ to some html
 				    //
-			    r=notesNodes[nodeKey]; //.toString()
+			    let r=notesNodes[nodeKey]; //.toString()
 			    //console.log(r.length)
 			    if (r.length!=undefined) {
 				    result+= r
@@ -1018,10 +1030,10 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
 			case "p:txBody":    
 			//case "a:rPr":    // runlevel properties
 			case "a:r":   
-			    [r,rn]= processNodesInNotesSlide(notesNodes[nodeKey])
+			    let [r1,rn1]= processNodesInNotesSlide(notesNodes[nodeKey])
 			    //console.log(r.length)
-			    result += r
-			    resultNodes+= rn
+			    result += r1
+			    resultNodes+= rn1
 			    break;
 			/*case "a:rPr":    // runlevel properties
 			    r= processNodesInNotesSlide(notesNodes[nodeKey])
@@ -1037,9 +1049,9 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
 			case "a:p":   
 			case "a:pPr":   
 			case "a:br":   
-			    [r,rn]= processNodesInNotesSlide(notesNodes[nodeKey])
-			    result += r
-			    resultNodes+= rn
+			    let [r2,rn2]= processNodesInNotesSlide(notesNodes[nodeKey])
+			    result += r2
+			    resultNodes+= rn2
 			    result += "\n"
 			    resultNodes += "\n"
 			    break;
@@ -1048,16 +1060,17 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
 			    resultNodes += "\n"
 			    break;
 		        case "a:ignoreendParaRPr": // some a:ps inside
-			    [r,rn] = processNodesInNotesSlide(notesNodes[nodeKey])
-			    result += r
-			    resultNodes+= rn
+			    let [r3,rn3] = processNodesInNotesSlide(notesNodes[nodeKey])
+			    result += r3
+			    resultNodes+= rn3
 			    break;
 			default:
 			    if (printNodes && nodeKey!="attrs") { 
+				    //console.log(notesNodes)
 				    //console.log("ignoring "+nodeKey)
-				    [r,rn]= processNodesInNotesSlide(notesNodes[nodeKey])
-				    result += r
-				    resultNodes+= rn
+				    let [r4,rn4]= processNodesInNotesSlide(notesNodes[nodeKey])
+				    result += r4
+				    resultNodes+= rn4
 			   }
 		    }
 		    if (printNodes && nodeKey!="attrs") { resultNodes+= "[/"+nodeKey+"]" }
