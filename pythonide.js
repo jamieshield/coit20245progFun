@@ -101,11 +101,60 @@ function setupPythonIDE (button,codeId,outputId,canvasId) {
 	    }
     } 
 
+// https://github.com/skulpt/skulpt/issues/855
+function loadDependency(filename) {
+     return new Promise(function(resolve, reject) {
+         var scriptElement = document.createElement("script");
+         scriptElement.type = "text/javascript";
+         scriptElement.src = filename;
+         scriptElement.onload = function() {
+              // we don't really care about the return type but a bool will do. 
+              resolve(true);
+         }
+         scriptElement.onerror = function() {
+               resolve(false);
+         }
+         document.body.appendChild(scriptElement);
+    });
+}
+
 
     // What to use to read from input
     function builtinRead(x) {
 	console.log("read "+x)
+	// https://github.com/skulpt/skulpt/issues/855
+	/*
+	 let filename=x
+	 if (filename in externalLibraries) {
+	     console.log("ext "+JSON.stringify(externalLibraries))
+             var extLib = externalLibs[filename];
+		console.log("external "+extLib)
+             if (typeof extLib === "string") {
+                  fileToLoad = extLib;
+                  dependencies = [];
+             } else {
+                  fileToLoad = extLib.path;
+                  dependencies = extLib.dependencies;
+             }
+
+             return Sk.misceval.promiseToSuspension(
+                 // load the dependencies in order, this because in your example
+                 // highcharts-more requires highchairs to be loaded but you can also
+                 // imagine a situation where you want to load them in parallel 
+                 // you could use Promise.all for those situations.
+                 dependencies
+                     .reduce(function (acc, filename) {
+                         return acc.then(function() {
+                             return loadDependency(fileName);
+                         });
+                     }, Promise.resolve())
+                     .then(fetch(fileToLoad))
+                     .then(r => r.text())
+            );
+        }
+*/
 	if (x=="a.txt") { return "Hello world\n"; }
+	//console.log(Sk.builtinFiles["files"][x])
         Sk.builtinFiles["files"]['src/lib/hashlib.py'] = `
 # https://github.com/ajalt/python-sha1/blob/master/README.md
 #from __future__ import print_function
@@ -330,7 +379,9 @@ def sha1(data):
                Sk.tg.turtleList = [];
            }
         }
-        Sk.configure({output:setup_outf(button), read:builtinRead}); 
+        Sk.configure({output:setup_outf(button), read:builtinRead }); 
+	    //,__future__: Sk.python3
+	//Sk.python3 = true
         (Sk.TurtleGraphics || (Sk.TurtleGraphics = {})).target = prg[0].id+"_"+canvasId;
 
 

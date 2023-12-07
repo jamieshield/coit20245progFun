@@ -9740,6 +9740,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
                 //     return "";
                 // }
             }
+	    //if (text.indexOf("Lists")>-1) { console.log("ttt"); console.log(text); console.log(pNode); console.log(JSON.stringify(pNode)) }
 
             var pPrNode = pNode["a:pPr"];
             //lvl
@@ -9775,6 +9776,7 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
             var linkTooltip = "";
             var defLinkClr;
             if (linkID !== undefined) {
+		//console.log(linkID)
                 linkTooltip = getTextByPathList(node, ["a:rPr", "a:hlinkClick", "attrs", "tooltip"]);
                 if (linkTooltip !== undefined) {
                     linkTooltip = "title='" + linkTooltip + "'";
@@ -9964,7 +9966,13 @@ a:pPr/ , a:rPr/ ,  a:t  , a:rPr/ a:t
 
             if (linkID !== undefined && linkID != "") {
                 var linkURL = warpObj["slideResObj"][linkID]["target"];
+		//console.log(linkURL)
                 linkURL = escapeHtml(linkURL);
+		if (linkURL.indexOf("m#")==0) {
+			linkURL=linkURL.replace("m#","#")
+			return openElemnt + " class='text-block " + cssName + "' style='" + text_style + "'><a href='" + linkURL + "' " + linkColorSyle + "  " + linkTooltip + " target='_self'>" +
+                        text.replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;').replace(/\s/g, "&nbsp;") + "</a>" + closeElemnt;
+		}
                 return openElemnt + " class='text-block " + cssName + "' style='" + text_style + "'><a href='" + linkURL + "' " + linkColorSyle + "  " + linkTooltip + " target='_blank'>" +
                         text.replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;').replace(/\s/g, "&nbsp;") + "</a>" + closeElemnt;
             } else {
