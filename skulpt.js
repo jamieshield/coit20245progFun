@@ -137,7 +137,7 @@
 	//setupSkulpt(idd,prog)
 
 
-// No longer supported
+// No longer supported by Skulpt but still here for now
 Sk.externalLibraries = {
       numpy : {
         //path: 'https://raw.githubusercontent.com/ebertmi/skulpt_numpy/master/numpy/__init__.js',

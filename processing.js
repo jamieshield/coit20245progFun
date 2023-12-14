@@ -18550,7 +18550,6 @@ module.exports = function setupParser(Processing, options) {
 
       // Keep track of whether or not the cached imageData has been touched.
       this.__isDirty = false;
-	return
 
       if (aWidth instanceof HTMLImageElement) {
         // convert an <img> to a PImage
@@ -18930,7 +18929,6 @@ module.exports = function setupParser(Processing, options) {
     * @see PGraphics
     */
     p.createImage = function(w, h, mode) {
-	console.log(w)
       return new PImage(w,h,mode);
     };
 
