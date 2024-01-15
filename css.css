@@ -167,7 +167,10 @@ body {
 	border-radius: 5px;
 	background: lightblue;
 }
-.setupSkulpt, .setupPythonTutor, .setupParsons {
+.setupProg {
+	margin-bottom: 30px;
+}
+.setupProg, .setupSkulpt, .setupPythonTutor, .setupParsons {
 	padding-top: 0px;
 }
 #centralarea, #outputpanel {
