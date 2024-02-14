@@ -168,6 +168,7 @@ body {
 	background: lightblue;
 }
 .setupProg {
+	padding-bottom: 30px;
 	margin-bottom: 30px;
 }
 .setupProg, .setupSkulpt, .setupPythonTutor, .setupParsons {
