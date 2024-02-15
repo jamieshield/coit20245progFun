@@ -892,18 +892,18 @@ function pptxLoad(windowjQuery) {
 		processNotes=processNotesAll
 		processNotes=processNotes.replace(/&lt;/g,"<")
 		processNotes=processNotes.replace(/&gt;/g,">")
-		console.log(processNotes)
+		//console.log(processNotes)
 
 		// lazy ? to get notes and html, e.g. div without scripts
 		//processNotes=processNotes.replace(/\ script\>[\t\s\S.\n]*?\ \/script\>/g,"")
 		//processNotes=processNotes.replace(/\< cript\>[\t\s\S.\n]*?\<\/ cript\>/g,"")
-		scriptsre=new RegExp("<"+"script>[\t\s\S.\n]*?<"+"/script>","g")
+		scriptsre=new RegExp("<"+"script>[\\t\\s\\S.\\n]*?<"+"/script>","gm")
 		//scriptsre=new RegExp("<"+"script>.*?<"+"/script>","g")
 		processNotes=processNotes.replace(scriptsre,"")
 
 		// try again non lazy
 		//processNotes=processNotes.replace(/\< cript\>[\s\S.]*\<\/ cript\>/g,"")
-		scriptsre=new RegExp("<"+"script>[\s\S.]*<"+"/script>","g")
+		scriptsre=new RegExp("<"+"script>[\\t\\s\\S.\\n]*<"+"/script>","gm")
 		processNotes=processNotes.replace(scriptsre,"")
 
 		/*
@@ -917,7 +917,7 @@ function pptxLoad(windowjQuery) {
 
 		processNotes=processNotes.replace(/script/g,"")
 		*/
-		//console.log(processNotes)
+		console.log(processNotes)
 
 
 
