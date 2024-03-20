@@ -25,7 +25,7 @@
 	let searchTxt=$(slide).html();
 	   //console.log(searchTxt)
 	for (let act of [...Array(17).keys()]) {
-	  for (let mod of [...Array(13).keys()]) { // just try each week
+	  for (let mod of [...Array(1000).keys()]) { // just try each week
 		let findtxt="{h5p:"+mod+"-"+act+"}"
   	      //console.log("-"+findtxt)
 	      if (searchTxt.indexOf(findtxt)>=0) {
