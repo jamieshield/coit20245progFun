@@ -25,16 +25,18 @@
 	let searchTxt=$(slide).html();
 	   //console.log(searchTxt)
 	for (let act of [...Array(17).keys()]) {
-		let findtxt="{h5p:1-"+act+"}"
-	   //console.log("-"+findtxt)
-	   if (searchTxt.indexOf(findtxt)>=0) {
+	  for (let mod of [...Array(13).keys()]) { // just try each week
+		let findtxt="{h5p:"+mod+"-"+act+"}"
+  	      //console.log("-"+findtxt)
+	      if (searchTxt.indexOf(findtxt)>=0) {
 		   //console.log("found "+findtxt)
-		let h5pact=$("#hiddenH5P1-"+act)
+		let h5pact=$("#hiddenH5P"+mod+"-"+act)
 		   $(h5pact).css("display","block");
 		   $(h5pact).css("background-color","red");
 		$(slide).html(searchTxt.replace(findtxt,""));
 		   $(h5pact).detach().appendTo($(slide))
-	   }
+	   }// mod
+	   }// act
 	}
    });
 	}
